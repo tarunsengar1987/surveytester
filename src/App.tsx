@@ -1,7 +1,7 @@
 
 import './App.css';
-import Login from './login/Login';
-import Dashboard from './Dashboard/Dashboard';
+import LoginPage from './LoginPage/login';
+import Dashboard from './Dashboard/dashboard';
 import {
   BrowserRouter as Router,
   Switch,
@@ -16,14 +16,14 @@ function App() {
  <Router>
     <Switch>
       <Route path="/" exact>
-      <Login></Login>
+      <LoginPage></LoginPage>
       </Route>
       <Route path="/dashboard" exact>
       <Dashboard></Dashboard>
       </Route>
     
     </Switch>
-    {/* <ConfirmDialog></ConfirmDialog> */}
+  
     </Router>
   
   );
