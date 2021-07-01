@@ -111,6 +111,8 @@ const useStyles = makeStyles((theme) =>
   })
 );
 const Dashboard = () => {
+  const userData = JSON.parse(localStorage.getItem("userData") || "") 
+  console.log(userData)
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const renderTree = (nodes: RenderTree) => (
@@ -170,7 +172,7 @@ const Dashboard = () => {
         </Toolbar>
       </AppBar>
       <main className={classes.content}>
-        <Typography variant="h2">{header.name}</Typography>
+        <Typography variant="h4">{header.name}</Typography>
       </main>
     </div>
   );

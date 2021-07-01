@@ -14,7 +14,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link } from '@material-ui/core';
 
-
+import axios from "axios"
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -44,13 +44,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type State = {
   username: string
-  password:  string
+  password: string
   isButtonDisabled: boolean
   helperText: string
   isError: boolean
 };
 
-const initialState:State = {
+const initialState: State = {
   username: '',
   password: '',
   isButtonDisabled: true,
@@ -67,34 +67,34 @@ type Action = { type: 'setUsername', payload: string }
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case 'setUsername': 
+    case 'setUsername':
       return {
         ...state,
         username: action.payload
       };
-    case 'setPassword': 
+    case 'setPassword':
       return {
         ...state,
         password: action.payload
       };
-    case 'setIsButtonDisabled': 
+    case 'setIsButtonDisabled':
       return {
         ...state,
         isButtonDisabled: action.payload
       };
-    case 'loginSuccess': 
+    case 'loginSuccess':
       return {
         ...state,
         helperText: action.payload,
         isError: false
       };
-    case 'loginFailed': 
+    case 'loginFailed':
       return {
         ...state,
         helperText: action.payload,
         isError: true
       };
-    case 'setIsError': 
+    case 'setIsError':
       return {
         ...state,
         isError: action.payload
@@ -103,6 +103,8 @@ const reducer = (state: State, action: Action): State => {
 }
 
 const Login: React.FC = () => {
+  const [userName, setUserName] = useState("")
+  const [password, setPassword] = useState("")
   const [open, setOpen] = useState(false);
   const [popupVisible, setPopupVisible] = useState<boolean>(false)
   const history = useHistory();
@@ -116,10 +118,10 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (state.username.trim() && state.password.trim()) {
-     dispatch({
-       type: 'setIsButtonDisabled',
-       payload: false
-     });
+      dispatch({
+        type: 'setIsButtonDisabled',
+        payload: false
+      });
     } else {
       dispatch({
         type: 'setIsButtonDisabled',
@@ -127,32 +129,30 @@ const Login: React.FC = () => {
       });
     }
   }, [state.username, state.password]);
- 
- 
 
 
-  const handleLogin = () => {
-    
-    if (state.username === 'abc@email.com' && state.password === 'password') {
-       dispatch({
-        type: 'loginSuccess',
-        payload: 'Login Successfully'
-      
-      });
-      history.push('/dashboard');
+
+
+  const handleLogin = async () => {
+    console.log(userName)
+    console.log(password)
+    const credentials = {
+      Email: userName,
+      Password: password
+    }
+    const { data } = await axios.post("https://test.surveytester.com/API/V2/authentication.ashx?method=login", credentials)
+    console.log(data)
+    if (data.Token) {
+      localStorage.setItem("userData",JSON.stringify(data))
+       history.push("/dashboard")
       
     } else {
-        dispatch({
-            type: 'loginFailed',
-            payload: 'Incorrect username or password'
-          });
+      alert("Email or Password incorrect.")
     }
   };
-  
- 
-  const handleChange = (event: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => {
-    setChecked(event.target.checked);
-  };
+
+
+
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
     if (event.keyCode === 13 || event.which === 13) {
@@ -167,18 +167,12 @@ const Login: React.FC = () => {
   };
   const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> =
     (event) => {
-      dispatch({
-        type: 'setUsername',
-        payload: event.target.value
-      });
+      setUserName(event.target.value)
     };
 
   const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> =
     (event) => {
-      dispatch({
-        type: 'setPassword',
-        payload: event.target.value
-      });
+      setPassword(event.target.value)
     }
   return (
     <form className={classes.container} noValidate autoComplete="off">
@@ -195,7 +189,7 @@ const Login: React.FC = () => {
               placeholder="Username"
               margin="normal"
               onChange={handleUsernameChange}
-              onKeyPress={handleKeyPress}
+              value={userName}
             />
             <TextField
               error={state.isError}
@@ -207,12 +201,12 @@ const Login: React.FC = () => {
               margin="normal"
               helperText={state.helperText}
               onChange={handlePasswordChange}
-              onKeyPress={handleKeyPress}
+              value={password}
             />
           </div>
           {/* <Button onClick={() => confirmDialog('Please enter your email address. We will send you a link with instructions to reset your password.',handleSubmit)}>I forgot my password</Button> */}
           <div>
-            <Link  className="cursor-pointer" onClick={handleClickOpen}>I forgot my password ?</Link>
+            <Link className="cursor-pointer" onClick={handleClickOpen}>I forgot my password ?</Link>
             <Dialog
               open={open}
               onClose={handleClose}
@@ -221,7 +215,7 @@ const Login: React.FC = () => {
               <DialogTitle id="form-dialog-title">Password Recovery </DialogTitle>
               <DialogContent>
                 <DialogContentText>
-                   Please enter your email address
+                  Please enter your email address
                   here. We will send you link with instruction to reset your password .
                 </DialogContentText>
                 <TextField
@@ -244,15 +238,15 @@ const Login: React.FC = () => {
             </Dialog>
           </div>
           <FormControlLabel className="keep_me"
-         control={
-        <Checkbox
-        defaultChecked
-        color="primary"
-        inputProps={{ 'aria-label': 'secondary checkbox' }}
-        />
-         }
-          label="Keep me signed in"
-      />
+            control={
+              <Checkbox
+                defaultChecked
+                color="primary"
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+              />
+            }
+            label="Keep me signed in"
+          />
         </CardContent>
         <CardActions>
           <Button
@@ -261,29 +255,29 @@ const Login: React.FC = () => {
             color="secondary"
             className={classes.loginBtn}
             onClick={handleLogin}
-            disabled={state.isButtonDisabled}>
-              
-          Sign In
+          >
+
+            Sign In
           </Button>
         </CardActions>
         <CardContent>
-        <FormControlLabel
-        control={
-          <Button
-           
+          <FormControlLabel
+            control={
+              <Button
+
+              />
+            }
+            label="Don't have an account yet?"
           />
-        }
-        label="Don't have an account yet?"
-       />
-        <FormControlLabel
-        control={
-          <Button
-           
+          <FormControlLabel
+            control={
+              <Button
+
+              />
+            }
+            label="Start using SurveyTester now!"
           />
-        }
-        label="Start using SurveyTester now!"
-       />
-       </CardContent>
+        </CardContent>
         <CardActions>
           <Button
             variant="contained"
@@ -291,9 +285,9 @@ const Login: React.FC = () => {
             color="primary"
             className={classes.loginBtn}
             onClick={handleLogin}
-            //disabled={state.isButtonDisabled}
-            >
-           Free trial
+          //disabled={state.isButtonDisabled}
+          >
+            Free trial
           </Button>
         </CardActions>
       </Card>
