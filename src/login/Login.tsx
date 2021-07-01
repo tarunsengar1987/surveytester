@@ -10,13 +10,9 @@ import Button from '@material-ui/core/Button';
 // import ConfirmDialog, { confirmDialog } from './ConfirmDialog';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import {
-  usePopupState,
-  bindTrigger,
-  bindMenu,
-} from 'material-ui-popup-state/hooks';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+
 
 
 
@@ -210,7 +206,7 @@ const Login: React.FC = () => {
             />
           </div>
           {/* <Button onClick={() => confirmDialog('Please enter your email address. We will send you a link with instructions to reset your password.',handleSubmit)}>I forgot my password</Button> */}
-          <Button onClick={togglePopup}>Click</Button>
+       
         </CardContent>
         <FormControlLabel
          control={

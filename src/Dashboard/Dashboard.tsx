@@ -30,6 +30,12 @@ interface RenderTrees {
     name: string;
     children?: RenderTrees[];
   }
+  interface Header {
+   
+    name: string;
+    headname: string;
+   
+  }
 const data: RenderTree = {
   id: 'root',
   name: 'All Recent Projects',
@@ -69,6 +75,10 @@ const datas: RenderTrees = {
         ],
       },
     ],
+  };
+  const header: Header = {
+    name: 'This is Dashboard',
+    headname: 'Survey Tester',
   };
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -140,7 +150,7 @@ const Dashboard = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Survey Tester
+           {header.headname}
           </Typography>
           <Button color="inherit">
             {" "}
@@ -160,7 +170,7 @@ const Dashboard = () => {
         </Toolbar>
       </AppBar>
       <main className={classes.content}>
-        <Typography variant="h2">Home Component</Typography>
+        <Typography variant="h2">{header.name}</Typography>
       </main>
     </div>
   );
