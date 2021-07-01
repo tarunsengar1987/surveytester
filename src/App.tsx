@@ -1,6 +1,6 @@
 
 import './App.css';
-import LoginPage from './LoginPage/login';
+import Login from './Login/login';
 import Dashboard from './Dashboard/dashboard';
 import {
   BrowserRouter as Router,
@@ -16,7 +16,7 @@ function App() {
  <Router>
     <Switch>
       <Route path="/" exact>
-      <LoginPage></LoginPage>
+      <Login></Login>
       </Route>
       <Route path="/dashboard" exact>
       <Dashboard></Dashboard>
