@@ -1,7 +1,7 @@
 
 import './App.css';
 import Login from './Login/login';
-import Dashboard from './Dashboard/dashboard.jsx';
+import Dashboard from './Dashboard/dashboard';
 import {
   BrowserRouter as Router,
   Switch,
