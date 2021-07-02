@@ -176,7 +176,7 @@ fetchProjects()
         <List className={classes.root}>
           {userData.Companies.map((item : any) => (
             <div key={item.IdCompany}>
-              <ListItem
+              <ListItem 
                 button
                 onClick={() => handleClick(item.CompanyName)}
                 key={uuidv4()}
@@ -216,7 +216,7 @@ fetchProjects()
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h5" className={classes.title}>
             Survey Tester
           </Typography>
           <Button color="inherit">
