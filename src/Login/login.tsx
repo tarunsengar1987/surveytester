@@ -134,13 +134,15 @@ const Login: React.FC = () => {
 
 
   const handleLogin = async () => {
-    console.log(userName)
-    console.log(password)
+    const SERVER_URL = process.env.REACT_APP_SERVER ;
+    // console.log(SERVER_URL)
+    // console.log(userName)
+    // console.log(password)
     const credentials = {
       Email: userName,
       Password: password
     }
-    const { data } = await axios.post("https://test.surveytester.com/API/V2/authentication.ashx?method=login", credentials)
+    const { data } = await axios.post(SERVER_URL + 'API/V2/authentication.ashx?method=login', credentials)
     console.log(data)
     if (data.Token) {
       localStorage.setItem("userData",JSON.stringify(data))
