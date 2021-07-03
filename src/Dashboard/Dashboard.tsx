@@ -25,6 +25,7 @@ import TreeItem from '@material-ui/lab/TreeItem';
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
 import { useEffect } from "react";
 import axios from "axios";
+import { render } from "node-sass";
 // interface RenderTree {
 //   IdCompany: string;
 //   CompanyName: string;
@@ -104,8 +105,8 @@ const useStyles = makeStyles((theme) =>
     //   "& > *": {
     //     margin: theme.spacing(1),
     //   },
-    
-   // },
+
+    // },
     orange: {
       color: theme.palette.getContrastText(deepOrange[500]),
       backgroundColor: deepOrange[500],
@@ -114,7 +115,7 @@ const useStyles = makeStyles((theme) =>
       color: theme.palette.getContrastText(deepPurple[500]),
       backgroundColor: deepPurple[500],
     },
-    root:{
+    root: {
       width: "100%",
       maxWidth: 360,
       background: theme.palette.background.paper,
@@ -132,79 +133,82 @@ type State = {
 
 const Dashboard = () => {
   const userData = JSON.parse(localStorage.getItem("userData") || "")
-  const [state, setState] = useState<State>({
-    
-  })
-  const [projects, setProjects] = useState<any>(null)
+  const [projects, setProjects] = useState<any>([])
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  console.log(projects)
-const fetchProjects = async () => {
-  const {data} = await axios.get(`${process.env.REACT_APP_SERVER}/API/V2/projects.ashx?method=projectlist&token=${userData.Token}`)
-  if(data){
-    setProjects(data)
-  }
-}
 
-useEffect(() => {
-fetchProjects()
-}, [])
-
-
-
-  const handleClick  = (companyName : string) => {
-    setState((prev) => {
-      return {
-        ...prev,
-        [companyName] : !prev[companyName]
-      }
-    } )
-    
+  const fetchProjects = async () => {
+    const { data } = await axios.get(`${process.env.REACT_APP_SERVER}/API/V2/projects.ashx?method=projectlist&token=${userData.Token}`)
+    if (data) {
+      setProjects(data.Companies)
+    }
   }
 
+  useEffect(() => {
+    fetchProjects()
+  }, [])
+
+  const renderProjectName = (projectName: string, projectId: string) => {
+    return <TreeItem label={projectName} nodeId={projectId} />
+  }
+
+  const renderFolder = (folder: any) => {
+    return (
+      <TreeItem label={folder.FolderName} nodeId={folder.IdFolder}>
+        {
+          folder.Projects.map((pr: any) => renderProjectName(pr.ProjectName, pr.IdProject))
+        }
+        {
+          folder.SubFolders.map((sf: any) => renderFolder(sf))
+        }
+      </TreeItem>
+    )
+  }
 
   return (
     <div>
       <CssBaseline />
       <Drawer open={open} onClose={() => setOpen(false)}>
-        <TreeView
-          className={classes.drawer}
-          defaultCollapseIcon={<ExpandMoreIcon />}
-          defaultExpanded={['root']}
-          defaultExpandIcon={<ChevronRightIcon />}
-        >
-        <List className={classes.root}>
-          {userData.Companies.map((item : any) => (
-            <div key={item.IdCompany}>
-              <ListItem 
-                button
-                onClick={() => handleClick(item.CompanyName)}
-                key={uuidv4()}
-              >
-                <ListItemText primary={item.CompanyName} />
-                {state[item.CompanyName] ? <ExpandLess /> : <ExpandMore />}
-              </ListItem>
-              <Collapse
-                key={uuidv4()}
-                component="li"
-                in={state[item.CompanyName]}
-                timeout="auto"
-                unmountOnExit
-              >
-                <List disablePadding className={classes.nested}>
-                  {item.Permissions.map((permission : string) => {
-                    return (
-                      <ListItem button key={uuidv4()}>
-                        <ListItemText primary={permission} />
-                      </ListItem>
-                    )
-                  })}
-                </List>
-              </Collapse>
-            </div>
-          ))}
-        </List>
-        </TreeView>
+        {
+          projects && (
+            <TreeView
+              className={classes.drawer}
+              defaultCollapseIcon={<ExpandMoreIcon />}
+              defaultExpanded={['root']}
+              defaultExpandIcon={<ChevronRightIcon />}
+            >
+              {
+                projects.map((company: any) => (
+                  <TreeItem label={company.CompanyName} nodeId={company.IdCompany}>
+
+
+                    <TreeItem nodeId={uuidv4()} label="All Projects" >
+                      {
+                        company.AllProjects.map((allProject: any) => (
+
+                          renderFolder(allProject)
+
+                        ))
+                      }
+                    </TreeItem>
+                    <TreeItem nodeId={uuidv4()} label="Recent Projects">
+                      {
+                        company.RecentProjects.map((rp: any) => renderProjectName(rp.ProjectName, rp.IdProject))
+                      }
+                    </TreeItem>
+                    <TreeItem nodeId={uuidv4()} label="Favorite Projects" >
+                      {
+                        company.FavoriteProjects.map((fp: any) => renderProjectName(fp.ProjectName, fp.IdProject))
+                      }
+                    </TreeItem>
+                    <TreeItem nodeId={uuidv4()} label="Closed Projects" />
+                  </TreeItem>
+                ))
+
+              }
+            </TreeView>
+          )
+        }
       </Drawer>
       <AppBar position="static" color="primary">
         <Toolbar>
@@ -230,9 +234,9 @@ fetchProjects()
             <Settings />
           </Button>
           <div className={classes.root}>
-           {/* <Avatar>H</Avatar>
+            {/* <Avatar>H</Avatar>
             <Avatar className={classes.orange}>N</Avatar> */}
-          
+
             <Avatar className="header_side">ST</Avatar>
           </div>
         </Toolbar>
