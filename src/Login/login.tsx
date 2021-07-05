@@ -10,11 +10,12 @@ import Button from '@material-ui/core/Button';
 // import ConfirmDialog, { confirmDialog } from './ConfirmDialog';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
+import Snackbar from '@material-ui/core/Snackbar';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link } from '@material-ui/core';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
-import axios from "axios"
+import axios from "axios";//Axios has the ability to intercept HTTP requests. Fetch, by default, doesn't provide a way to intercept requests. Axios has built-in support for download progress. Fetch does not support upload progress
+import { Alert } from '@material-ui/lab';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -103,10 +104,13 @@ const reducer = (state: State, action: Action): State => {
 }
 
 const Login: React.FC = () => {
-const [open, setOpen] = useState(false);
+  const [userName, setUserName] = useState("")
+  const [password, setPassword] = useState("")
+  const [open, setOpen] = useState(false);
   const [popupVisible, setPopupVisible] = useState<boolean>(false)
   const history = useHistory();
   const [checked, setChecked] = React.useState(true);
+  const handleSubmit = () => console.log('Okay!')
   const classes = useStyles();
   const [state, dispatch] = useReducer(reducer, initialState);
   function togglePopup() {
@@ -130,42 +134,46 @@ const [open, setOpen] = useState(false);
 
 
 
-  const handleLogin = async (event : React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const handleLogin = async () => {
     const SERVER_URL = process.env.REACT_APP_SERVER ;
     // console.log(SERVER_URL)
     // console.log(userName)
     // console.log(password)
     const credentials = {
-      Email: state.username,
-      Password: state.password
+      Email: userName,
+      Password: password
     }
     const { data } = await axios.post(SERVER_URL + 'API/V2/authentication.ashx?method=login', credentials)
     console.log(data)
-    if (data.Token) {
-      localStorage.setItem("userData",JSON.stringify(data))
-      dispatch({
-        type : "loginSuccess",
-        payload : "Login successfully"
-      })
-       history.push("/dashboard")
-      
+    if (data.Token) {      
+      setOpenAlertInvalid(true)
+      localStorage.setItem("userData",JSON.stringify(data))  
+      setTimeout(() => {
+        history.push("/dashboard") 
+      }, 1000);
     } else {
-      dispatch({
-        type : "loginFailed",
-        payload : "Wrong credentials"
-      })
+      setOpenAlert(true)
     }
   };
 
+  const [openAlert, setOpenAlert] = React.useState(false);
+  const [openAlertInvalid, setOpenAlertInvalid] = React.useState(false);
+  const handleClick = () => {
+    setOpenAlert(true);
+  };
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
+  };
+  const handleCloseAlertInvalid = () => {
+    setOpenAlertInvalid(false);
+  };
 
 
-
-  // const handleKeyPress = (event: React.KeyboardEvent) => {
-  //   if (event.keyCode === 13 || event.which === 13) {
-  //     state.isButtonDisabled || handleLogin(event)
-  //   }
-  // };
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.keyCode === 13 || event.which === 13) {
+      state.isButtonDisabled || handleLogin();
+    }
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -174,23 +182,16 @@ const [open, setOpen] = useState(false);
   };
   const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> =
     (event) => {
-    
-      dispatch({
-        type : "setUsername",
-        payload : event.target.value
-      })
+      setUserName(event.target.value)
     };
 
   const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> =
     (event) => {
-      dispatch({
-        type : "setPassword",
-        payload : event.target.value
-      })
+      setPassword(event.target.value)
     }
   return (
     <>
-    <form className={classes.container} noValidate autoComplete="off" onSubmit={handleLogin}>
+    <form className={classes.container} noValidate autoComplete="off">
       <Card className={classes.card}>
         <CardHeader className={classes.header} title="Survey tester" />
         <CardContent>
@@ -204,7 +205,7 @@ const [open, setOpen] = useState(false);
               placeholder="Username"
               margin="normal"
               onChange={handleUsernameChange}
-              value={state.username}
+              value={userName}
             />
             <TextField
               error={state.isError}
@@ -216,7 +217,7 @@ const [open, setOpen] = useState(false);
               margin="normal"
               helperText={state.helperText}
               onChange={handlePasswordChange}
-              value={state.password}
+              value={password}
             />
           </div>
           {/* <Button onClick={() => confirmDialog('Please enter your email address. We will send you a link with instructions to reset your password.',handleSubmit)}>I forgot my password</Button> */}
@@ -257,7 +258,6 @@ const [open, setOpen] = useState(false);
               <Checkbox
                 defaultChecked
                 color="primary"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
               />
             }
             label="Keep me signed in"
@@ -269,8 +269,7 @@ const [open, setOpen] = useState(false);
             size="large"
             color="secondary"
             className={classes.loginBtn}
-            type="submit"
-            disabled={state.isButtonDisabled}
+            onClick={handleLogin}
           >
 
             Sign In
@@ -294,21 +293,30 @@ const [open, setOpen] = useState(false);
             label="Start using SurveyTester now!"
           />
         </CardContent>
-        {/* <CardActions>
+        <CardActions>
           <Button
             variant="contained"
             size="large"
             color="primary"
             className={classes.loginBtn}
             onClick={handleLogin}
-        disabled={state.isButtonDisabled}
+          //disabled={state.isButtonDisabled}
           >
             Free trial
           </Button>
-        </CardActions> */}
+        </CardActions>
       </Card>
     </form>
-    {state.isError && <h1>{state.helperText}</h1>}
+    <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert}>
+        <Alert onClose={handleCloseAlert} severity="error">
+          Invalid Login Credential
+        </Alert>
+      </Snackbar>
+      <Snackbar open={openAlertInvalid} autoHideDuration={6000} onClose={handleCloseAlertInvalid}>
+        <Alert onClose={handleCloseAlertInvalid} severity="success">
+          Login Successfully
+        </Alert>
+      </Snackbar>
     </>
   );
 }

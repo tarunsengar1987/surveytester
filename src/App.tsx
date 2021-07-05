@@ -1,9 +1,11 @@
 import "./App.css";
-import Login from "./01 -login/Login/login";
+import Login from "./Login/login";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Topbar from "./01 -login/Appbar/Appbar";
+//Demo Routes now 
 
+import Topbar from "./01-login/Appbar/appbar";
+import Dashboard from "./01-login/Dashboard/dashboard";
 function App() {
   return (
     <Router>
@@ -11,11 +13,12 @@ function App() {
         <Switch>
           <Route exact path="/" component={Login} />
           <Route path="/">
+          <Topbar />
             <div className="container">
-            <Topbar />
+            
               <Switch>
                 <Route path="/dashboard">
-                  
+                  <Dashboard/>
                 </Route>
               </Switch>
             </div>
