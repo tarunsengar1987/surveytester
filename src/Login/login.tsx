@@ -103,13 +103,10 @@ const reducer = (state: State, action: Action): State => {
 }
 
 const Login: React.FC = () => {
-  const [userName, setUserName] = useState("")
-  const [password, setPassword] = useState("")
-  const [open, setOpen] = useState(false);
+const [open, setOpen] = useState(false);
   const [popupVisible, setPopupVisible] = useState<boolean>(false)
   const history = useHistory();
   const [checked, setChecked] = React.useState(true);
-  const handleSubmit = () => console.log('Okay!')
   const classes = useStyles();
   const [state, dispatch] = useReducer(reducer, initialState);
   function togglePopup() {
@@ -133,34 +130,42 @@ const Login: React.FC = () => {
 
 
 
-  const handleLogin = async () => {
+  const handleLogin = async (event : React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
     const SERVER_URL = process.env.REACT_APP_SERVER ;
     // console.log(SERVER_URL)
     // console.log(userName)
     // console.log(password)
     const credentials = {
-      Email: userName,
-      Password: password
+      Email: state.username,
+      Password: state.password
     }
     const { data } = await axios.post(SERVER_URL + 'API/V2/authentication.ashx?method=login', credentials)
     console.log(data)
     if (data.Token) {
       localStorage.setItem("userData",JSON.stringify(data))
+      dispatch({
+        type : "loginSuccess",
+        payload : "Login successfully"
+      })
        history.push("/dashboard")
       
     } else {
-      alert("Email or Password incorrect.")
+      dispatch({
+        type : "loginFailed",
+        payload : "Wrong credentials"
+      })
     }
   };
 
 
 
 
-  const handleKeyPress = (event: React.KeyboardEvent) => {
-    if (event.keyCode === 13 || event.which === 13) {
-      state.isButtonDisabled || handleLogin();
-    }
-  };
+  // const handleKeyPress = (event: React.KeyboardEvent) => {
+  //   if (event.keyCode === 13 || event.which === 13) {
+  //     state.isButtonDisabled || handleLogin(event)
+  //   }
+  // };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -169,15 +174,23 @@ const Login: React.FC = () => {
   };
   const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> =
     (event) => {
-      setUserName(event.target.value)
+    
+      dispatch({
+        type : "setUsername",
+        payload : event.target.value
+      })
     };
 
   const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> =
     (event) => {
-      setPassword(event.target.value)
+      dispatch({
+        type : "setPassword",
+        payload : event.target.value
+      })
     }
   return (
-    <form className={classes.container} noValidate autoComplete="off">
+    <>
+    <form className={classes.container} noValidate autoComplete="off" onSubmit={handleLogin}>
       <Card className={classes.card}>
         <CardHeader className={classes.header} title="Survey tester" />
         <CardContent>
@@ -191,7 +204,7 @@ const Login: React.FC = () => {
               placeholder="Username"
               margin="normal"
               onChange={handleUsernameChange}
-              value={userName}
+              value={state.username}
             />
             <TextField
               error={state.isError}
@@ -203,7 +216,7 @@ const Login: React.FC = () => {
               margin="normal"
               helperText={state.helperText}
               onChange={handlePasswordChange}
-              value={password}
+              value={state.password}
             />
           </div>
           {/* <Button onClick={() => confirmDialog('Please enter your email address. We will send you a link with instructions to reset your password.',handleSubmit)}>I forgot my password</Button> */}
@@ -256,7 +269,8 @@ const Login: React.FC = () => {
             size="large"
             color="secondary"
             className={classes.loginBtn}
-            onClick={handleLogin}
+            type="submit"
+            disabled={state.isButtonDisabled}
           >
 
             Sign In
@@ -280,20 +294,22 @@ const Login: React.FC = () => {
             label="Start using SurveyTester now!"
           />
         </CardContent>
-        <CardActions>
+        {/* <CardActions>
           <Button
             variant="contained"
             size="large"
             color="primary"
             className={classes.loginBtn}
             onClick={handleLogin}
-          //disabled={state.isButtonDisabled}
+        disabled={state.isButtonDisabled}
           >
             Free trial
           </Button>
-        </CardActions>
+        </CardActions> */}
       </Card>
     </form>
+    {state.isError && <h1>{state.helperText}</h1>}
+    </>
   );
 }
 

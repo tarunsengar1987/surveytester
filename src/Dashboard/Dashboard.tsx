@@ -13,7 +13,6 @@ import {
   Collapse,
 } from "@material-ui/core";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
-import { v4 as uuidv4 } from 'uuid';
 import MenuIcon from "@material-ui/icons/Menu";
 import { NotificationsNone, Language, Settings } from "@material-ui/icons";
 import Avatar from "@material-ui/core/Avatar";
@@ -126,9 +125,6 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-type State = {
-  [key: string]: boolean
-}
 
 
 const Dashboard = () => {
@@ -148,18 +144,34 @@ const Dashboard = () => {
     fetchProjects()
   }, [])
 
+  type ProjectType =
+    {
+      IdProject: string,
+      ProjectName: string,
+      IsWatched: boolean,
+      LastUpdate: null,
+      LastAccess: null
+    }
+
+  type FolderType = {
+    IdFolder: string,
+    FolderName: string,
+    SubFolders: [FolderType],
+    Projects: [ProjectType]
+  }
+
   const renderProjectName = (projectName: string, projectId: string) => {
     return <TreeItem label={projectName} nodeId={projectId} />
   }
 
-  const renderFolder = (folder: any) => {
+  const renderFolder = (folder: FolderType) => {
     return (
       <TreeItem label={folder.FolderName} nodeId={folder.IdFolder}>
         {
-          folder.Projects.map((pr: any) => renderProjectName(pr.ProjectName, pr.IdProject))
+          folder.Projects.map((pr: ProjectType) => renderProjectName(pr.ProjectName, pr.IdProject))
         }
         {
-          folder.SubFolders.map((sf: any) => renderFolder(sf))
+          folder.SubFolders.map((sf: FolderType) => renderFolder(sf))
         }
       </TreeItem>
     )
@@ -182,26 +194,26 @@ const Dashboard = () => {
                   <TreeItem label={company.CompanyName} nodeId={company.IdCompany}>
 
 
-                    <TreeItem nodeId={uuidv4()} label="All Projects" >
+                    <TreeItem nodeId="all projects" label="All Projects" >
                       {
-                        company.AllProjects.map((allProject: any) => (
+                        company.AllProjects.map((allProject: FolderType) => (
 
                           renderFolder(allProject)
 
                         ))
                       }
                     </TreeItem>
-                    <TreeItem nodeId={uuidv4()} label="Recent Projects">
+                    <TreeItem nodeId="recent" label="Recent Projects">
                       {
-                        company.RecentProjects.map((rp: any) => renderProjectName(rp.ProjectName, rp.IdProject))
+                        company.RecentProjects.map((rp: ProjectType) => renderProjectName(rp.ProjectName, rp.IdProject))
                       }
                     </TreeItem>
-                    <TreeItem nodeId={uuidv4()} label="Favorite Projects" >
+                    <TreeItem nodeId="favorite" label="Favorite Projects" >
                       {
-                        company.FavoriteProjects.map((fp: any) => renderProjectName(fp.ProjectName, fp.IdProject))
+                        company.FavoriteProjects.map((fp: ProjectType) => renderProjectName(fp.ProjectName, fp.IdProject))
                       }
                     </TreeItem>
-                    <TreeItem nodeId={uuidv4()} label="Closed Projects" />
+                    <TreeItem nodeId="closed" label="Closed Projects" />
                   </TreeItem>
                 ))
 
