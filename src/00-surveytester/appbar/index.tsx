@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import "./appbar.css";
+import React, { useState, useEffect } from "react";
+import axios from "axios"; 
+//Axios has the ability to intercept HTTP requests. Fetch, by default, doesn't provide a way to intercept requests. Axios has built-in support for download progress. Fetch does not support upload progress
+
 import { NotificationsNone, Language, Settings } from "@material-ui/icons";
 import {
   Button,
@@ -19,9 +21,7 @@ import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { deepOrange } from "@material-ui/core/colors";
 import { deepPurple } from "@material-ui/core/colors";
 import TreeView from "@material-ui/lab/TreeView";
-//import { v4 as uuidv4 } from "uuid";
-import { useEffect } from "react";
-import axios from "axios";//Axios has the ability to intercept HTTP requests. Fetch, by default, doesn't provide a way to intercept requests. Axios has built-in support for download progress. Fetch does not support upload progress
+import "./appbar.scss";
 
 const useStyles = makeStyles((theme) =>
   createStyles({

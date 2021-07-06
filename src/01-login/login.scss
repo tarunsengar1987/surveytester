@@ -1,0 +1,51 @@
+.halfwidth {
+  text-align: center;
+}
+
+.main-bg {
+  background-image: url("../00-surveytester/assets/ship.jpg");
+  height: 100vh;
+}
+
+.login-new {
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 30%;
+  margin-left: 100px;
+  height: 100vh;
+}
+
+.login-new a,
+.MuiFormControlLabel-root {
+  color: #fff;
+}
+
+.MuiCheckbox-root {
+  color: #fff !important;
+}
+
+.MuiInputBase-input {
+  background-color: #fff !important;
+  border-radius: 6px;
+  padding: 8px 20px !important;
+  height: auto !important;
+  line-height: 34px !important;
+}
+
+.btn {
+  background: #2b8ed5 !important;
+  color: #fff !important;
+  padding: 10px 20px !important;
+  text-transform: unset !important;
+}
+
+.btn-green {
+  background: #3fd52b !important;
+}
+
+.btn-blue {
+  background: #2b8ed5 !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
