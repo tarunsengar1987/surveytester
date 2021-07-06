@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios"; 
+
+import { useState, useEffect } from "react";
+import axios from "axios";
 //Axios has the ability to intercept HTTP requests. Fetch, by default, doesn't provide a way to intercept requests. Axios has built-in support for download progress. Fetch does not support upload progress
 
 import { NotificationsNone, Language, Settings } from "@material-ui/icons";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { deepOrange, deepPurple } from "@material-ui/core/colors";
 import {
   Button,
   AppBar,
@@ -14,14 +17,11 @@ import {
 } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import MenuIcon from "@material-ui/icons/Menu";
-import TreeItem from "@material-ui/lab/TreeItem";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
-import { deepOrange } from "@material-ui/core/colors";
-import { deepPurple } from "@material-ui/core/colors";
 import TreeView from "@material-ui/lab/TreeView";
-import "./appbar.scss";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import TreeItem from "@material-ui/lab/TreeItem";
+import "./topbar.scss";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -57,20 +57,12 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
+
 export default function Topbar() {
-  const classes = useStyles();
+  const classes = useStyles()
   const [open, setOpen] = useState(false);
   const [projects, setProjects] = useState<any>([]);
   const userData = JSON.parse(localStorage.getItem("userData") || "");
-  const fetchProjects = async () => {
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER}/API/V2/projects.ashx?method=projectlist&token=${userData.Token}`
-    );
-    if (data) {
-      setProjects(data.Companies);
-    }
-  };
-
   useEffect(() => {
     fetchProjects();
   });
@@ -91,11 +83,18 @@ export default function Topbar() {
     Projects: [ProjectType]
   }
 
+  const fetchProjects = async () => {
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_SERVER}/API/V2/projects.ashx?method=getProjectList&token=${userData.Token}`
+    );
+    if (data) {
+      setProjects(data.Companies);
+    }
+  };
 
   const renderProjectName = (projectName: string, projectId: string) => {
     return <TreeItem label={projectName} nodeId={projectId} />
   }
-
 
   const renderFolder = (folder: FolderType) => {
     return (
@@ -103,7 +102,6 @@ export default function Topbar() {
         {
           folder.Projects.map((pr: ProjectType) =>
             renderProjectName(pr.ProjectName, pr.IdProject))
-
         }
         {
           folder.SubFolders.map((sf: FolderType) => renderFolder(sf))
@@ -111,6 +109,7 @@ export default function Topbar() {
       </TreeItem>
     );
   };
+
   return (
     <div className="topbar">
       <div className="topbarWrapper">
@@ -173,14 +172,12 @@ export default function Topbar() {
               <Settings />
             </Button>
             <Button className={classes.root}>
-              {/* <Avatar>H</Avatar>
-            <Avatar className={classes.orange}>N</Avatar> */}
-              <Avatar className={classes.purple}>ST</Avatar>
+              <Avatar className={classes.purple}>AD</Avatar>
             </Button>
           </Toolbar>
         </AppBar>
       </div>
-
     </div>
   );
 }
+

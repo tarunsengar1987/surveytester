@@ -1,9 +1,10 @@
 import React from 'react'
 import "./dashboard.scss";
+
 const Dashboard = () => {
   return (
     <div>
-      <h1>from Dashboard side </h1>
+      <h1>Welcome to dashboard</h1>
     </div>
   )
 }

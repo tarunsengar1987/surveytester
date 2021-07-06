@@ -16,26 +16,25 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import "../login.scss";
 
 const UserLogin = () => {
-
+  const SERVER_URL = process.env.REACT_APP_SERVER;
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [open, setOpen] = useState(false);
 
   const handleLogin = async () => {
-    const { data } = await axios.post("https://test.surveytester.com/API/V2/authentication.ashx?method=login", {
+    const { data } = await axios.post(SERVER_URL + 'API/V2/authentication.ashx?method=login', {
       Email: email,
       Password: password
     })
 
     if (data.Token) {
       localStorage.setItem("userData", JSON.stringify(data))
-      history.push("/");
+      history.push("/dashboard");
     } else {
       alert("Email or Password incorrect.")
     }
   };
-
 
   return (
     <div className="main-bg">
