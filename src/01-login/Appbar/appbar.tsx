@@ -19,7 +19,7 @@ import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { deepOrange } from "@material-ui/core/colors";
 import { deepPurple } from "@material-ui/core/colors";
 import TreeView from "@material-ui/lab/TreeView";
-import { v4 as uuidv4 } from "uuid";
+//import { v4 as uuidv4 } from "uuid";
 import { useEffect } from "react";
 import axios from "axios";//Axios has the ability to intercept HTTP requests. Fetch, by default, doesn't provide a way to intercept requests. Axios has built-in support for download progress. Fetch does not support upload progress
 
@@ -73,19 +73,41 @@ export default function Topbar() {
 
   useEffect(() => {
     fetchProjects();
-  }, []);
+  });
+
+  type ProjectType =
+    {
+      IdProject: string,
+      ProjectName: string,
+      IsWatched: boolean,
+      LastUpdate: null,
+      LastAccess: null
+    }
+
+  type FolderType = {
+    IdFolder: string,
+    FolderName: string,
+    SubFolders: [FolderType],
+    Projects: [ProjectType]
+  }
+
 
   const renderProjectName = (projectName: string, projectId: string) => {
-    return <TreeItem label={projectName} nodeId={projectId} />;
-  };
+    return <TreeItem label={projectName} nodeId={projectId} />
+  }
 
-  const renderFolder = (folder: any) => {
+
+  const renderFolder = (folder: FolderType) => {
     return (
       <TreeItem label={folder.FolderName} nodeId={folder.IdFolder}>
-        {folder.Projects.map((pr: any) =>
-          renderProjectName(pr.ProjectName, pr.IdProject)
-        )}
-        {folder.SubFolders.map((sf: any) => renderFolder(sf))}
+        {
+          folder.Projects.map((pr: ProjectType) =>
+            renderProjectName(pr.ProjectName, pr.IdProject))
+
+        }
+        {
+          folder.SubFolders.map((sf: FolderType) => renderFolder(sf))
+        }
       </TreeItem>
     );
   };
@@ -106,22 +128,22 @@ export default function Topbar() {
                   label={company.CompanyName}
                   nodeId={company.IdCompany}
                 >
-                  <TreeItem nodeId={uuidv4()} label="All Projects">
-                    {company.AllProjects.map((allProject: any) =>
+                  <TreeItem nodeId="all projects" label="All Projects">
+                    {company.AllProjects.map((allProject: FolderType) =>
                       renderFolder(allProject)
                     )}
                   </TreeItem>
-                  <TreeItem nodeId={uuidv4()} label="Recent Projects">
-                    {company.RecentProjects.map((rp: any) =>
+                  <TreeItem nodeId="recent" label="Recent Projects">
+                    {company.RecentProjects.map((rp: ProjectType) =>
                       renderProjectName(rp.ProjectName, rp.IdProject)
                     )}
                   </TreeItem>
-                  <TreeItem nodeId={uuidv4()} label="Favorite Projects">
-                    {company.FavoriteProjects.map((fp: any) =>
+                  <TreeItem nodeId="favorite" label="Favorite Projects">
+                    {company.FavoriteProjects.map((fp: ProjectType) =>
                       renderProjectName(fp.ProjectName, fp.IdProject)
                     )}
                   </TreeItem>
-                  <TreeItem nodeId={uuidv4()} label="Closed Projects" />
+                  <TreeItem nodeId="closed" label="Closed Projects" />
                 </TreeItem>
               ))}
             </TreeView>
@@ -153,11 +175,12 @@ export default function Topbar() {
             <Button className={classes.root}>
               {/* <Avatar>H</Avatar>
             <Avatar className={classes.orange}>N</Avatar> */}
-              <Avatar className={classes.purple}>RV</Avatar>
+              <Avatar className={classes.purple}>ST</Avatar>
             </Button>
           </Toolbar>
         </AppBar>
       </div>
+
     </div>
   );
 }
