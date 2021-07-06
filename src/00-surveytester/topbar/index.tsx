@@ -65,7 +65,8 @@ export default function Topbar() {
   const userData = JSON.parse(localStorage.getItem("userData") || "");
   useEffect(() => {
     fetchProjects();
-  }, []);
+    // eslint-disable-next-line
+  },[]);
 
   type ProjectType =
     {
