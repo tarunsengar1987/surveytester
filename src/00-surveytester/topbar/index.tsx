@@ -65,7 +65,7 @@ export default function Topbar() {
   const userData = JSON.parse(localStorage.getItem("userData") || "");
   useEffect(() => {
     fetchProjects();
-  });
+  }, []);
 
   type ProjectType =
     {
@@ -84,8 +84,13 @@ export default function Topbar() {
   }
 
   const fetchProjects = async () => {
+    let config = {
+      headers: {
+        "token": userData.Token,
+      }
+    }
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER}/API/V2/projects.ashx?method=getProjectList&token=${userData.Token}`
+      `${process.env.REACT_APP_SERVER}/API/V2/projects.ashx?method=getProjectList`, config
     );
     if (data) {
       setProjects(data.Companies);

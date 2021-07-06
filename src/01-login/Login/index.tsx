@@ -24,8 +24,9 @@ const UserLogin = () => {
 
   const handleLogin = async () => {
     const { data } = await axios.post(SERVER_URL + 'API/V2/authentication.ashx?method=login', {
-      Email: email,
-      Password: password
+      email: email,
+      password: password,
+      timestamp: new Date().toUTCString()
     })
 
     if (data.Token) {
