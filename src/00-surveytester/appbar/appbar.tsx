@@ -20,6 +20,9 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TreeItem from "@material-ui/lab/TreeItem";
 import "./appbar.scss";
+import { CompanyModel } from "../../model/company.model";
+import { FolderModel } from "../../model/folder.model";
+import { ProjectModel } from "../../model/project.model";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -59,28 +62,12 @@ const useStyles = makeStyles((theme) =>
 export default function Topbar() {
   const classes = useStyles()
   const [open, setOpen] = useState(false);
-  const [projects, setProjects] = useState<any>([]);
+  const [companies, setCompanies] = useState<CompanyModel[]>([]);
   const userData = JSON.parse(localStorage.getItem("userData") || "");
   useEffect(() => {
     fetchProjects();
     // eslint-disable-next-line
   }, []);
-
-  type ProjectType =
-    {
-      IdProject: string,
-      ProjectName: string,
-      IsWatched: boolean,
-      LastUpdate: null,
-      LastAccess: null
-    }
-
-  type FolderType = {
-    IdFolder: string,
-    FolderName: string,
-    SubFolders: [FolderType],
-    Projects: [ProjectType]
-  }
 
   const fetchProjects = async () => {
     let config = {
@@ -91,24 +78,24 @@ export default function Topbar() {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER}/API/V2/projects.ashx?method=getProjectList`, config
     );
-    if (data) {
-      setProjects(data.Companies);
+    if (data.Status.Status === 'OK') {
+      setCompanies(data.Companies);
     }
   };
 
   const renderProjectName = (projectName: string, projectId: string) => {
-    return <TreeItem label={projectName} nodeId={projectId} />
+    return <TreeItem label={projectName} nodeId={projectId} key={projectId}/>
   }
 
-  const renderFolder = (folder: FolderType) => {
+  const renderFolder = (folder: FolderModel) => {
     return (
-      <TreeItem label={folder.FolderName} nodeId={folder.IdFolder}>
+      <TreeItem label={folder.FolderName} nodeId={folder.IdFolder} key={folder.IdFolder}>
         {
-          folder.Projects.map((pr: ProjectType) =>
-            renderProjectName(pr.ProjectName, pr.IdProject))
+          folder.Projects.map((project: ProjectModel) =>
+            renderProjectName(project.ProjectName, project.IdProject))
         }
         {
-          folder.SubFolders.map((sf: FolderType) => renderFolder(sf))
+          folder.SubFolders.map((folder: FolderModel) => renderFolder(folder))
         }
       </TreeItem>
     );
@@ -119,31 +106,32 @@ export default function Topbar() {
       <div className="topbarWrapper">
         <CssBaseline />
         <Drawer open={open} onClose={() => setOpen(false)}>
-          {projects && (
+          {companies && (
             <TreeView
               className={classes.drawer}
               defaultCollapseIcon={<ExpandMoreIcon />}
               defaultExpanded={["root"]}
               defaultExpandIcon={<ChevronRightIcon />}
             >
-              {projects.map((company: any) => (
+              {companies.map((company: CompanyModel) => (
                 <TreeItem
                   label={company.CompanyName}
                   nodeId={company.IdCompany}
+                  key={company.IdCompany}
                 >
                   <TreeItem nodeId="all projects" label="All Projects">
-                    {company.AllProjects.map((allProject: FolderType) =>
+                    {company.AllProjects.map((allProject: FolderModel) =>
                       renderFolder(allProject)
                     )}
                   </TreeItem>
                   <TreeItem nodeId="recent" label="Recent Projects">
-                    {company.RecentProjects.map((rp: ProjectType) =>
-                      renderProjectName(rp.ProjectName, rp.IdProject)
+                    {company.RecentProjects.map((project: ProjectModel) =>
+                      renderProjectName(project.ProjectName, project.IdProject)
                     )}
                   </TreeItem>
                   <TreeItem nodeId="favorite" label="Favorite Projects">
-                    {company.FavoriteProjects.map((fp: ProjectType) =>
-                      renderProjectName(fp.ProjectName, fp.IdProject)
+                    {company.FavoriteProjects.map((project: ProjectModel) =>
+                      renderProjectName(project.ProjectName, project.IdProject)
                     )}
                   </TreeItem>
                   <TreeItem nodeId="closed" label="Closed Projects" />
