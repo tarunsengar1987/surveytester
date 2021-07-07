@@ -13,6 +13,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { toast } from "react-toastify";
 import "../login.scss";
 
 const Login = () => {
@@ -32,9 +33,10 @@ const Login = () => {
 
     if (data.Token) {
       localStorage.setItem("userData", JSON.stringify(data))
+      toast.success("Login successfully.");
       history.push("/dashboard");
     } else {
-      alert("Email or Password incorrect.")
+      toast.error("Email or Password incorrect.");
     }
   };
 
