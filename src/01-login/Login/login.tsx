@@ -15,7 +15,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import "../login.scss";
 
-const UserLogin = () => {
+const Login = () => {
   const SERVER_URL = process.env.REACT_APP_SERVER;
   const history = useHistory();
   const [email, setEmail] = useState('');
@@ -153,4 +153,4 @@ const UserLogin = () => {
     </div >
   );
 };
-export default UserLogin;
+export default Login;
