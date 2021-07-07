@@ -1,18 +1,10 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom"
 import axios from "axios"
-
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import {
+  Button, TextField, FormControlLabel, Checkbox, Link, Grid, Dialog,
+  DialogActions, DialogContent, DialogContentText, DialogTitle
+} from '@material-ui/core';
 import { toast } from "react-toastify";
 import "../login.scss";
 
@@ -127,7 +119,7 @@ const Login = () => {
           <Grid item>
             {/* // TODO: New User UI functionality*/}
             <Link href="#" variant="body2">
-              {"Don't have an account? Sign Up"}
+              {"Don't have an account yet?"}
             </Link>
           </Grid>
           <label>Start Using Free Trial </label>

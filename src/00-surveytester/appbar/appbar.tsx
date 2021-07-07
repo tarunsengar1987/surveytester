@@ -4,25 +4,15 @@ import axios from "axios";
 import { NotificationsNone, Language, Settings } from "@material-ui/icons";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
-import {
-  Button,
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-  Drawer,
-  CssBaseline,
-} from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
+import { Button, AppBar, Toolbar, Typography, IconButton, Drawer, CssBaseline, Avatar } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import TreeView from "@material-ui/lab/TreeView";
+import { TreeView, TreeItem } from "@material-ui/lab";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import TreeItem from "@material-ui/lab/TreeItem";
-import "./appbar.scss";
 import { CompanyModel } from "../../model/company.model";
 import { FolderModel } from "../../model/folder.model";
 import { ProjectModel } from "../../model/project.model";
+import "./appbar.scss";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -58,7 +48,6 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-
 export default function Topbar() {
   const classes = useStyles()
   const [open, setOpen] = useState(false);
@@ -83,7 +72,7 @@ export default function Topbar() {
   };
 
   const renderProjectName = (projectName: string, projectId: string) => {
-    return <TreeItem label={projectName} nodeId={projectId} key={projectId}/>
+    return <TreeItem label={projectName} nodeId={projectId} key={projectId} />
   }
 
   const renderFolder = (folder: FolderModel) => {
