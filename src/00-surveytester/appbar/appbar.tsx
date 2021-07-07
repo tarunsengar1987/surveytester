@@ -21,7 +21,7 @@ import TreeView from "@material-ui/lab/TreeView";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TreeItem from "@material-ui/lab/TreeItem";
-import "./topbar.scss";
+import "./appbar.scss";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -66,7 +66,7 @@ export default function Topbar() {
   useEffect(() => {
     fetchProjects();
     // eslint-disable-next-line
-  },[]);
+  }, []);
 
   type ProjectType =
     {
