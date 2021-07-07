@@ -107,15 +107,17 @@ const Login = () => {
                 <Button onClick={() => setOpen(false)} color="primary">
                   Cancel
                 </Button>
+                {/* // TODO: Reset Password functionality*/}
                 <Button onClick={() => setOpen(false)} color="primary">
                   Send
                 </Button>
               </DialogActions>
             </Dialog>
           </div>
+          {/* // TODO: Keep me signed in functionality*/}
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
-            label="Keep me signed in "
+            label="Keep me signed in"
           />
           <div className="buttons">
             <Button name="signin" value="Login" type="submit" id="signin" className="btn btn-green" color="primary">
@@ -123,28 +125,33 @@ const Login = () => {
             </Button>
           </div>
           <Grid item>
-            <Link href="" variant="body2">
+            {/* // TODO: New User UI functionality*/}
+            <Link href="#" variant="body2">
               {"Don't have an account? Sign Up"}
             </Link>
           </Grid>
           <label>Start Using Free Trial </label>
           <div className="buttons">
+            {/* // TODO: Free Trial functionality */}
             <Button className="btn btn-blue" color="primary">
               Free Trial
             </Button>
           </div>
           <ul>
             <li>
+              {/* // TODO: Create Terms of Service UI*/}
               <Link href="#" variant="body1">
                 Terms of Service
               </Link>
             </li>
             <li>
+              {/* // TODO: Create Disclaimer UI*/}
               <Link href="#" variant="body1">
                 Disclaimer
               </Link>
             </li>
             <li>
+              {/* // TODO: Create UI*/}
               <Link href="#" variant="body1">
                 What is servey tester?
               </Link>
