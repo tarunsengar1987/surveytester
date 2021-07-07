@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Topbar from "./00-surveytester/topbar";
 import Login from "./01-login/login";
-import Dashboard from "./02-dashboard";
+import Dashboard from "./02-dashboard/dashboard";
 import "./App.scss";
 
 function App() {
