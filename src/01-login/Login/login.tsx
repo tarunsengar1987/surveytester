@@ -22,7 +22,8 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [open, setOpen] = useState(false);
 
-  const handleLogin = async () => {
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
     const { data } = await axios.post(SERVER_URL + 'API/V2/authentication.ashx?method=login', {
       email: email,
       password: password,
@@ -52,7 +53,7 @@ const Login = () => {
           </Grid>
           <Grid item></Grid>
         </Grid>
-        <form className="login">
+        <form className="login" onSubmit={(event) => handleLogin(event)}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -115,8 +116,7 @@ const Login = () => {
             label="Keep me signed in "
           />
           <div className="buttons">
-            <Button name="signin" value="Login"
-              onClick={handleLogin} id="signin" className="btn btn-green" color="primary">
+            <Button name="signin" value="Login" type="submit" id="signin" className="btn btn-green" color="primary">
               Sign In
             </Button>
           </div>
