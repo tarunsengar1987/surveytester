@@ -146,7 +146,7 @@ export default function Topbar() {
         <CssBaseline />
         <Drawer open={open} onClose={() => setOpen(false)}>
           <Accordion square expanded={expanded === 'favoriteProjects'} onChange={handleChange('favoriteProjects')}>
-            <AccordionSummary aria-controls="panel1d-content" id="favoriteProjects-header">
+            <AccordionSummary id="favoriteProjects-header">
               <Typography>{t("appBar.favoriteProjects")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -164,7 +164,7 @@ export default function Topbar() {
             </AccordionDetails>
           </Accordion>
           <Accordion square expanded={expanded === 'recentProjects'} onChange={handleChange('recentProjects')}>
-            <AccordionSummary aria-controls="panel2d-content" id="recentProjects-header">
+            <AccordionSummary id="recentProjects-header">
               <Typography>{t("appBar.recentProjects")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -182,7 +182,7 @@ export default function Topbar() {
             </AccordionDetails>
           </Accordion>
           <Accordion square expanded={expanded === 'allProjects'} onChange={handleChange('allProjects')}>
-            <AccordionSummary aria-controls="panel3d-content" id="allProjects-header">
+            <AccordionSummary id="allProjects-header">
               <Typography>{t("appBar.allProjects")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -209,7 +209,7 @@ export default function Topbar() {
             </AccordionDetails>
           </Accordion>
           <Accordion square expanded={expanded === 'closedProjects'} onChange={handleChange('closedProjects')}>
-            <AccordionSummary aria-controls="panel4d-content" id="closedProjects-header">
+            <AccordionSummary id="closedProjects-header">
               <Typography>{t("appBar.closedProjects")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
