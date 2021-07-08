@@ -136,8 +136,8 @@ export default function Topbar() {
 
   const [expanded, setExpanded] = useState('favoriteProjects');
 
-  const handleChange = (panel: any) => (event: any, newExpanded: any) => {
-    setExpanded(newExpanded ? panel : false);
+  const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
+    setExpanded(newExpanded ? panel : '');
   };
 
   return (
