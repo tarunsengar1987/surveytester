@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { NotificationsNone, Language, Settings } from "@material-ui/icons";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
@@ -16,6 +15,7 @@ import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import { CompanyModel, FolderModel, ProjectModel } from "../../04-projectlist/projectlist-model";
 import { useTranslation } from "react-i18next";
 import "./appbar.scss";
+import { fetchProjectsAPI } from "../../04-projectlist/projectlist-api"
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -93,7 +93,6 @@ export default function Topbar() {
   const classes = useStyles()
   const [open, setOpen] = useState(false);
   const [companies, setCompanies] = useState<CompanyModel[]>([]);
-  const userData = JSON.parse(localStorage.getItem("userData") || "");
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -101,14 +100,7 @@ export default function Topbar() {
   }, []);
 
   const fetchProjects = async () => {
-    let config = {
-      headers: {
-        "token": userData.Token,
-      }
-    }
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER}/API/V2/projects.ashx?method=getProjectList`, config
-    );
+    const { data } = await fetchProjectsAPI()
     if (data.Status.Status === 'OK') {
       setCompanies(data.Companies);
     }
