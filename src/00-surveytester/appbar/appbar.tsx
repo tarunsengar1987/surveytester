@@ -93,6 +93,9 @@ export default function Topbar() {
   const classes = useStyles()
   const [open, setOpen] = useState(false);
   const [companies, setCompanies] = useState<CompanyModel[]>([]);
+  const [expandedAllProjectTree, setExpandedAllProjectTree] = useState<string[]>(['root']);
+  const [epandedCloseProjectTree, setExpandedCloseProjectTree] = useState<string[]>(['root']);
+  const [expandedAccordion, setExpandedAccordion] = useState('favoriteProjects');
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -124,10 +127,16 @@ export default function Topbar() {
     );
   };
 
-  const [expanded, setExpanded] = useState('favoriteProjects');
+  const handleAccordionChange = (panel: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
+    setExpandedAccordion(newExpanded ? panel : '');
+  };
 
-  const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
-    setExpanded(newExpanded ? panel : '');
+  const handleAllProjectsTreeChange = (event: React.ChangeEvent<{}>, nodeIds: string[]) => {
+    setExpandedAllProjectTree(nodeIds)
+  };
+
+  const handleClosedProjectsTreeChange = (event: React.ChangeEvent<{}>, nodeIds: string[]) => {
+    setExpandedCloseProjectTree(nodeIds)
   };
 
   return (
@@ -135,7 +144,7 @@ export default function Topbar() {
       <div className="topbarWrapper">
         <CssBaseline />
         <Drawer open={open} onClose={() => setOpen(false)}>
-          <Accordion square expanded={expanded === 'favoriteProjects'} onChange={handleChange('favoriteProjects')}>
+          <Accordion square expanded={expandedAccordion === 'favoriteProjects'} onChange={handleAccordionChange('favoriteProjects')}>
             <AccordionSummary id="favoriteProjects-header">
               <Typography>{t("appBar.favoriteProjects")}</Typography>
             </AccordionSummary>
@@ -153,7 +162,7 @@ export default function Topbar() {
               )}
             </AccordionDetails>
           </Accordion>
-          <Accordion square expanded={expanded === 'recentProjects'} onChange={handleChange('recentProjects')}>
+          <Accordion square expanded={expandedAccordion === 'recentProjects'} onChange={handleAccordionChange('recentProjects')}>
             <AccordionSummary id="recentProjects-header">
               <Typography>{t("appBar.recentProjects")}</Typography>
             </AccordionSummary>
@@ -171,7 +180,7 @@ export default function Topbar() {
               )}
             </AccordionDetails>
           </Accordion>
-          <Accordion square expanded={expanded === 'allProjects'} onChange={handleChange('allProjects')}>
+          <Accordion square expanded={expandedAccordion === 'allProjects'} onChange={handleAccordionChange('allProjects')}>
             <AccordionSummary id="allProjects-header">
               <Typography>{t("appBar.allProjects")}</Typography>
             </AccordionSummary>
@@ -182,6 +191,8 @@ export default function Topbar() {
                   defaultCollapseIcon={<ExpandMoreIcon />}
                   defaultExpanded={["root"]}
                   defaultExpandIcon={<ChevronRightIcon />}
+                  expanded={expandedAllProjectTree}
+                  onNodeToggle={handleAllProjectsTreeChange}
                 >
                   {companies.map((company: CompanyModel) => (
                     <TreeItem
@@ -198,7 +209,10 @@ export default function Topbar() {
               )}
             </AccordionDetails>
           </Accordion>
-          <Accordion square expanded={expanded === 'closedProjects'} onChange={handleChange('closedProjects')}>
+
+
+
+          <Accordion square expanded={expandedAccordion === 'closedProjects'} onChange={handleAccordionChange('closedProjects')}>
             <AccordionSummary id="closedProjects-header">
               <Typography>{t("appBar.closedProjects")}</Typography>
             </AccordionSummary>
@@ -209,6 +223,8 @@ export default function Topbar() {
                   defaultCollapseIcon={<ExpandMoreIcon />}
                   defaultExpanded={["root"]}
                   defaultExpandIcon={<ChevronRightIcon />}
+                  expanded={epandedCloseProjectTree}
+                  onNodeToggle={handleClosedProjectsTreeChange}
                 >
                   {companies.map((company: CompanyModel) => (
                     <TreeItem
@@ -225,6 +241,7 @@ export default function Topbar() {
               )}
             </AccordionDetails>
           </Accordion>
+
         </Drawer>
         <AppBar position="static" color="primary">
           <Toolbar>
