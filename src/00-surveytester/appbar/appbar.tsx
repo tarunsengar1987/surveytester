@@ -134,7 +134,7 @@ export default function Topbar() {
     );
   };
 
-  const [expanded, setExpanded] = useState('panel1');
+  const [expanded, setExpanded] = useState('favoriteProjects');
 
   const handleChange = (panel: any) => (event: any, newExpanded: any) => {
     setExpanded(newExpanded ? panel : false);
@@ -145,8 +145,8 @@ export default function Topbar() {
       <div className="topbarWrapper">
         <CssBaseline />
         <Drawer open={open} onClose={() => setOpen(false)}>
-          <Accordion square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-            <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+          <Accordion square expanded={expanded === 'favoriteProjects'} onChange={handleChange('favoriteProjects')}>
+            <AccordionSummary aria-controls="panel1d-content" id="favoriteProjects-header">
               <Typography>{t("appBar.favoriteProjects")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -163,8 +163,8 @@ export default function Topbar() {
               )}
             </AccordionDetails>
           </Accordion>
-          <Accordion square expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-            <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+          <Accordion square expanded={expanded === 'recentProjects'} onChange={handleChange('recentProjects')}>
+            <AccordionSummary aria-controls="panel2d-content" id="recentProjects-header">
               <Typography>{t("appBar.recentProjects")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -181,8 +181,8 @@ export default function Topbar() {
               )}
             </AccordionDetails>
           </Accordion>
-          <Accordion square expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-            <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+          <Accordion square expanded={expanded === 'allProjects'} onChange={handleChange('allProjects')}>
+            <AccordionSummary aria-controls="panel3d-content" id="allProjects-header">
               <Typography>{t("appBar.allProjects")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -208,8 +208,8 @@ export default function Topbar() {
               )}
             </AccordionDetails>
           </Accordion>
-          <Accordion square expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
-            <AccordionSummary aria-controls="panel4`d-content" id="panel4d-header">
+          <Accordion square expanded={expanded === 'closedProjects'} onChange={handleChange('closedProjects')}>
+            <AccordionSummary aria-controls="panel4d-content" id="closedProjects-header">
               <Typography>{t("appBar.closedProjects")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
