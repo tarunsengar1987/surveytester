@@ -153,11 +153,11 @@ export default function Topbar() {
               {companies && (
                 <div>
                   {companies.map((company: CompanyModel) => (
-                    <>
+                    <span key={company.IdCompany}>
                       {company.FavoriteProjects.map((project: ProjectModel) =>
                         renderProjectName(project.ProjectName, project.IdProject)
                       )}
-                    </>
+                    </span>
                   ))}
                 </div>
               )}
@@ -171,7 +171,7 @@ export default function Topbar() {
               {companies && (
                 <div>
                   {companies.map((company: CompanyModel) => (
-                    <span>
+                    <span key={company.IdCompany}>
                       {company.RecentProjects.map((project: ProjectModel) =>
                         renderProjectName(project.ProjectName, project.IdProject)
                       )}
