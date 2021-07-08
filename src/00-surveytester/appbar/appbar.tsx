@@ -13,11 +13,9 @@ import { withStyles } from '@material-ui/core/styles';
 import MuiAccordion from '@material-ui/core/Accordion';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
-import { CompanyModel } from "../../model/company.model";
-import { FolderModel } from "../../model/folder.model";
-import { ProjectModel } from "../../model/project.model";
-import "./appbar.scss";
+import { CompanyModel, FolderModel, ProjectModel } from "../../04-projectlist/projectlist-model";
 import { useTranslation } from "react-i18next";
+import "./appbar.scss";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
