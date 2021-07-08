@@ -1,0 +1,28 @@
+{
+    "send": "Send",
+    "cancel": "Cancel",
+    "surveyTester": "Survey Tester",
+    "appBar": {
+        "favoriteProjects": "Favorite Projects",
+        "recentProjects": "Recent Projects",
+        "allProjects": "All Projects",
+        "closedProjects": "Closed Projects"
+    },
+    "login": {
+        "emailAddress": "Email Address",
+        "password": "Password",
+        "forgotPassword": "I forgot my password ?",
+        "keepMeSignedIn": "Keep me signed in",
+        "signIn": "Sign In",
+        "dontHaveAccount": "Don't have an account yet?",
+        "startUsingFreeTrial": "Start Using Free Trial",
+        "freeTrial": "Free Trial",
+        "termsOfService": "Terms of Service",
+        "disclaimer": "Disclaimer",
+        "whatIsServeyTester": "What is servey tester?",
+        "passwordRecovery": "Password Recovery",
+        "forgotPasswordText": "Please enter your email address here. We will send you link with instruction to reset your password.",
+        "loginSuccessfully": "Login successfully.",
+        "emailPasswordIncorrect": "Email or Password incorrect."
+    }
+}

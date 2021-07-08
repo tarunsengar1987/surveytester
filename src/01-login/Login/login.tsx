@@ -7,13 +7,16 @@ import {
 } from '@material-ui/core';
 import { toast } from "react-toastify";
 import "../login.scss";
-
+import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 const Login = () => {
+
   const SERVER_URL = process.env.REACT_APP_SERVER;
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -25,10 +28,10 @@ const Login = () => {
 
     if (data.Token) {
       localStorage.setItem("userData", JSON.stringify(data))
-      toast.success("Login successfully.");
+      toast.success(t("login.loginSuccessfully"));
       history.push("/dashboard");
     } else {
-      toast.error("Email or Password incorrect.");
+      toast.error(t("login.emailPasswordIncorrect"));
     }
   };
 
@@ -37,11 +40,11 @@ const Login = () => {
       <div className="login-new">
         <Grid container>
           <Grid item xs>
-            <Link href="#" variant="body1">
+            <Link href="#" variant="body1" onClick={() => i18next.changeLanguage('en')}>
               English
             </Link>
             <span> | </span>
-            <Link href="#" variant="body2">
+            <Link href="#" variant="body2" onClick={() => i18next.changeLanguage('de')}>
               German
             </Link>
           </Grid>
@@ -54,7 +57,7 @@ const Login = () => {
             required
             id="email"
             type="email"
-            label="Email Address"
+            label={t("login.emailAddress")}
             name="email"
             autoComplete="email"
             autoFocus
@@ -66,7 +69,7 @@ const Login = () => {
             margin="normal"
             required
             name="password"
-            label="Password"
+            label={t("login.password")}
             type="password"
             id="password"
             autoComplete="current-password"
@@ -74,34 +77,33 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <div>
-            <Link className="cursor-pointer" onClick={() => setOpen(true)}>I forgot my password ?</Link>
+            <Link className="cursor-pointer" onClick={() => setOpen(true)}>{t("login.forgotPassword")}</Link>
             <Dialog
               open={open}
               onClose={() => setOpen(false)}
               aria-labelledby="form-dialog-title"
             >
-              <DialogTitle id="form-dialog-title">Password Recovery </DialogTitle>
+              <DialogTitle id="form-dialog-title">{t("login.passwordRecovery")} </DialogTitle>
               <DialogContent>
                 <DialogContentText>
-                  Please enter your email address
-                  here. We will send you link with instruction to reset your password .
+                  {t("login.forgotPasswordText")}
                 </DialogContentText>
                 <TextField
                   autoFocus
                   margin="dense"
                   id="name"
-                  label="Email Address"
+                  label={t("login.emailAddress")}
                   type="email"
                   fullWidth
                 />
               </DialogContent>
               <DialogActions>
                 <Button onClick={() => setOpen(false)} color="primary">
-                  Cancel
+                  {t("cancel")}
                 </Button>
                 {/* // TODO: Reset Password functionality*/}
                 <Button onClick={() => setOpen(false)} color="primary">
-                  Send
+                  {t("send")}
                 </Button>
               </DialogActions>
             </Dialog>
@@ -109,43 +111,43 @@ const Login = () => {
           {/* // TODO: Keep me signed in functionality*/}
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
-            label="Keep me signed in"
+            label={t("login.keepMeSignedIn")}
           />
           <div className="buttons">
             <Button name="signin" value="Login" type="submit" id="signin" className="btn btn-green" color="primary">
-              Sign In
+              {t("login.signIn")}
             </Button>
           </div>
           <Grid item>
             {/* // TODO: New User UI functionality*/}
             <Link href="#" variant="body2">
-              {"Don't have an account yet?"}
+              {t("login.dontHaveAccount")}
             </Link>
           </Grid>
-          <label>Start Using Free Trial </label>
+          <label>{t("login.startUsingFreeTrial")} </label>
           <div className="buttons">
             {/* // TODO: Free Trial functionality */}
             <Button className="btn btn-blue" color="primary">
-              Free Trial
+              {t("login.freeTrial")}
             </Button>
           </div>
           <ul>
             <li>
               {/* // TODO: Create Terms of Service UI*/}
               <Link href="#" variant="body1">
-                Terms of Service
+                {t("login.termsOfService")}
               </Link>
             </li>
             <li>
               {/* // TODO: Create Disclaimer UI*/}
               <Link href="#" variant="body1">
-                Disclaimer
+                {t("login.disclaimer")}
               </Link>
             </li>
             <li>
               {/* // TODO: Create UI*/}
               <Link href="#" variant="body1">
-                What is servey tester?
+                {t("login.whatIsServeyTester")}
               </Link>
             </li>
           </ul>

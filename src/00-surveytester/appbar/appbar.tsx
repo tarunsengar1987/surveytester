@@ -17,6 +17,7 @@ import { CompanyModel } from "../../model/company.model";
 import { FolderModel } from "../../model/folder.model";
 import { ProjectModel } from "../../model/project.model";
 import "./appbar.scss";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -95,6 +96,8 @@ export default function Topbar() {
   const [open, setOpen] = useState(false);
   const [companies, setCompanies] = useState<CompanyModel[]>([]);
   const userData = JSON.parse(localStorage.getItem("userData") || "");
+  const { t } = useTranslation();
+
   useEffect(() => {
     fetchProjects();
   }, []);
@@ -144,7 +147,7 @@ export default function Topbar() {
         <Drawer open={open} onClose={() => setOpen(false)}>
           <Accordion square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
             <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-              <Typography>Favorite Projects</Typography>
+              <Typography>{t("appBar.favoriteProjects")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               {companies && (
@@ -162,7 +165,7 @@ export default function Topbar() {
           </Accordion>
           <Accordion square expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
             <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-              <Typography>Recent Projects</Typography>
+              <Typography>{t("appBar.recentProjects")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               {companies && (
@@ -180,7 +183,7 @@ export default function Topbar() {
           </Accordion>
           <Accordion square expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
             <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-              <Typography>All Projects</Typography>
+              <Typography>{t("appBar.allProjects")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               {companies && (
@@ -207,7 +210,7 @@ export default function Topbar() {
           </Accordion>
           <Accordion square expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
             <AccordionSummary aria-controls="panel4`d-content" id="panel4d-header">
-              <Typography>Closed Projects</Typography>
+              <Typography>{t("appBar.closedProjects")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               {companies && (
@@ -244,7 +247,7 @@ export default function Topbar() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              Survey Tester
+              {t("surveyTester")}
             </Typography>
             <Button color="inherit">
               {" "}

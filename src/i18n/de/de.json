@@ -1,0 +1,28 @@
+{
+    "send": "Senden",
+    "cancel": "Abbrechen",
+    "surveyTester": "Umfragetester",
+    "appBar": {
+        "favoriteProjects": "Lieblingsprojekte",
+        "recentProjects": "Letzte Projekte",
+        "allProjects": "Alle Projekte",
+        "closedProjects": "Geschlossene Projekte"
+    },
+    "login": {
+        "emailAddress": "E-Mail-Adresse",
+        "password": "Passwort",
+        "forgotPassword": "Ich habe mein Passwort vergessen?",
+        "keepMeSignedIn": "Halten Sie mich angemeldet",
+        "signIn": "Einloggen",
+        "dontHaveAccount": "Sie haben noch kein Konto?",
+        "startUsingFreeTrial": "Starten Sie die kostenlose Testversion Tri",
+        "freeTrial": "Kostenlose Testphase",
+        "termsOfService": "Nutzungsbedingungen",
+        "disclaimer": "Haftungsausschluss",
+        "whatIsServeyTester": "Was ist ein Serviertester?",
+        "passwordRecovery": "Passwort-Wiederherstellung",
+        "forgotPasswordText": "Bitte geben Sie hier Ihre E-Mail-Adresse ein. Wir senden Ihnen einen Link mit einer Anleitung zum Zurücksetzen Ihres Passworts.",
+        "loginSuccessfully": "Anmeldung erfolgreich.",
+        "emailPasswordIncorrect": "E-Mail oder Passwort falsch."
+    }
+}
