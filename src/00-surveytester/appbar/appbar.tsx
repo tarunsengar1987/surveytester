@@ -1,4 +1,5 @@
 
+import { useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { NotificationsNone, Language, Settings } from "@material-ui/icons";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
@@ -11,8 +12,10 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { withStyles } from '@material-ui/core/styles';
 import MuiAccordion from '@material-ui/core/Accordion';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import { CompanyModel, FolderModel, ProjectModel } from "../../04-projectlist/projectlist-model";
+import axios from "axios";
 import { useTranslation } from "react-i18next";
 import "./appbar.scss";
 import { fetchProjectsAPI } from "../../04-projectlist/projectlist-api"
@@ -90,6 +93,8 @@ const AccordionDetails = withStyles((theme) => ({
 }))(MuiAccordionDetails);
 
 export default function Topbar() {
+  const baseURL = process.env.REACT_APP_SERVER;
+  const history = useHistory();
   const classes = useStyles()
   const [open, setOpen] = useState(false);
   const [companies, setCompanies] = useState<CompanyModel[]>([]);
@@ -127,6 +132,12 @@ export default function Topbar() {
     );
   };
 
+  const handleLogout = async () => {
+    await axios.get(`${baseURL}/API/V2/authentication.ashx?method=logout`, getHeader());
+      localStorage.removeItem("userData");
+      history.push("/");
+  }
+
   const handleAccordionChange = (panel: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
     setExpandedAccordion(newExpanded ? panel : '');
   };
@@ -138,6 +149,13 @@ export default function Topbar() {
   const handleClosedProjectsTreeChange = (event: React.ChangeEvent<{}>, nodeIds: string[]) => {
     setExpandedCloseProjectTree(nodeIds)
   };
+
+  function getHeader() {
+    const userData = JSON.parse(localStorage.getItem("userData") || "");
+    return {
+        headers: { "token": userData.Token }
+    }
+}
 
   return (
     <div className="topbar">
@@ -238,6 +256,7 @@ export default function Topbar() {
               )}
             </AccordionDetails>
           </Accordion>
+
         </Drawer>
         <AppBar position="static" color="primary">
           <Toolbar>
@@ -264,6 +283,9 @@ export default function Topbar() {
             </Button>
             <Button className={classes.root}>
               <Avatar className={classes.purple}>AD</Avatar>
+            </Button>
+            <Button color="inherit" onClick={handleLogout}>
+              <ExitToAppIcon />
             </Button>
           </Toolbar>
         </AppBar>
