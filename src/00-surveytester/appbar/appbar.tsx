@@ -134,8 +134,8 @@ export default function Topbar() {
 
   const handleLogout = async () => {
     await axios.get(`${baseURL}/API/V2/authentication.ashx?method=logout`, getHeader());
-      localStorage.removeItem("userData");
-      history.push("/");
+    localStorage.removeItem("userData");
+    history.push("/");
   }
 
   const handleAccordionChange = (panel: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
@@ -151,11 +151,11 @@ export default function Topbar() {
   };
 
   function getHeader() {
-    const userData = JSON.parse(localStorage.getItem("userData") || "");
+    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
     return {
-        headers: { "token": userData.Token }
+      headers: { "token": userData?.Token }
     }
-}
+  }
 
   return (
     <div className="topbar">
