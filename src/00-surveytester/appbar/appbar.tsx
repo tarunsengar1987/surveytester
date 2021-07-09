@@ -168,7 +168,12 @@ export default function Topbar() {
             </AccordionSummary>
             <AccordionDetails>
               {companies && (
-                <div>
+                <TreeView
+                  className={classes.drawer}
+                  defaultCollapseIcon={<ExpandMoreIcon />}
+                  defaultExpandIcon={<ChevronRightIcon />}
+                  defaultExpanded={["root"]}
+                >
                   {companies.map((company: CompanyModel) => (
                     <span key={company.IdCompany}>
                       {company.FavoriteProjects.map((project: ProjectModel) =>
@@ -176,7 +181,7 @@ export default function Topbar() {
                       )}
                     </span>
                   ))}
-                </div>
+                </TreeView>
               )}
             </AccordionDetails>
           </Accordion>
@@ -186,7 +191,12 @@ export default function Topbar() {
             </AccordionSummary>
             <AccordionDetails>
               {companies && (
-                <div>
+                <TreeView
+                  className={classes.drawer}
+                  defaultCollapseIcon={<ExpandMoreIcon />}
+                  defaultExpandIcon={<ChevronRightIcon />}
+                  defaultExpanded={["root"]}
+                >
                   {companies.map((company: CompanyModel) => (
                     <span key={company.IdCompany}>
                       {company.RecentProjects.map((project: ProjectModel) =>
@@ -194,7 +204,7 @@ export default function Topbar() {
                       )}
                     </span>
                   ))}
-                </div>
+                </TreeView>
               )}
             </AccordionDetails>
           </Accordion>
@@ -256,7 +266,6 @@ export default function Topbar() {
               )}
             </AccordionDetails>
           </Accordion>
-
         </Drawer>
         <AppBar position="static" color="primary">
           <Toolbar>
@@ -293,4 +302,3 @@ export default function Topbar() {
     </div>
   );
 }
-
