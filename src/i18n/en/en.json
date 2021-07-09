@@ -23,6 +23,8 @@
         "passwordRecovery": "Password Recovery",
         "forgotPasswordText": "Please enter your email address here. We will send you link with instruction to reset your password.",
         "loginSuccessfully": "Login successfully.",
-        "emailPasswordIncorrect": "Email or Password incorrect."
+        "emailPasswordIncorrect": "Email or Password incorrect.",
+        "emailSendSucessful":"Mail send to your register email",
+        "emailIncorrect":"Email was wrong"
     }
 }

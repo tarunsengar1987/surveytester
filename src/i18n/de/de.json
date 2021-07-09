@@ -23,6 +23,8 @@
         "passwordRecovery": "Passwort-Wiederherstellung",
         "forgotPasswordText": "Bitte geben Sie hier Ihre E-Mail-Adresse ein. Wir senden Ihnen einen Link mit einer Anleitung zum Zurücksetzen Ihres Passworts.",
         "loginSuccessfully": "Anmeldung erfolgreich.",
-        "emailPasswordIncorrect": "E-Mail oder Passwort falsch."
+        "emailPasswordIncorrect": "E-Mail oder Passwort falsch.",
+        "emailSendSucessful":"Mail an Ihre Registrierungs-E-Mail senden",
+        "emailIncorrect":"E-Mail war falsch"
     }
 }
