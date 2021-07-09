@@ -19,6 +19,7 @@ import axios from "axios";
 import { useTranslation } from "react-i18next";
 import "./appbar.scss";
 import { fetchProjectsAPI } from "../../04-projectlist/projectlist-api"
+import { getHeader } from "../apiHelper";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -149,13 +150,6 @@ export default function Topbar() {
   const handleClosedProjectsTreeChange = (event: React.ChangeEvent<{}>, nodeIds: string[]) => {
     setExpandedCloseProjectTree(nodeIds)
   };
-
-  function getHeader() {
-    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
-    return {
-      headers: { "token": userData?.Token }
-    }
-  }
 
   return (
     <div className="topbar">
