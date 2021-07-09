@@ -209,9 +209,6 @@ export default function Topbar() {
               )}
             </AccordionDetails>
           </Accordion>
-
-
-
           <Accordion square expanded={expandedAccordion === 'closedProjects'} onChange={handleAccordionChange('closedProjects')}>
             <AccordionSummary id="closedProjects-header">
               <Typography>{t("appBar.closedProjects")}</Typography>
@@ -241,7 +238,6 @@ export default function Topbar() {
               )}
             </AccordionDetails>
           </Accordion>
-
         </Drawer>
         <AppBar position="static" color="primary">
           <Toolbar>
