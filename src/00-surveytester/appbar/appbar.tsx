@@ -135,7 +135,7 @@ export default function Topbar() {
 
   const handleLogout = async () => {
     await axios.get(`${baseURL}/API/V2/authentication.ashx?method=logout`, getHeader());
-    localStorage.removeItem("userData");
+    localStorage.removeItem("token");
     history.push("/login");
     window.location.reload();
   }

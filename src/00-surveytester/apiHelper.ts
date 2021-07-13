@@ -1,6 +1,6 @@
 export function getHeader() {
-    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+    const authToken = localStorage.getItem("token")
     return {
-        headers: { "token": userData?.Token }
+        headers: { "token": authToken }
     }
 }

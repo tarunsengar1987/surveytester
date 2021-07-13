@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import AppBar from "../appbar/appbar";
 
-const isAuthenticated = localStorage.getItem("userData") ? true : false
+const isAuthenticated = localStorage.getItem("token") ? true : false
 
 const PrivateRoute = ({ component, ...rest }: any) => {
   const routeComponent = (props: any) => (

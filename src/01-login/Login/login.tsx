@@ -38,9 +38,9 @@ const Login: FunctionComponent<RouteComponentProps> = (props) => {
         timestamp: new Date().toUTCString(),
       }
     );
-
-    if (data.Token) {
-      localStorage.setItem("userData", JSON.stringify(data));
+    
+    if (data.Status.Status === 'OK') {
+      localStorage.setItem("token", data.Token);
       props.history.push('/dashboard');
       window.location.reload();
     } else {
