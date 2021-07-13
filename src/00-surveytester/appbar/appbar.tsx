@@ -136,7 +136,8 @@ export default function Topbar() {
   const handleLogout = async () => {
     await axios.get(`${baseURL}/API/V2/authentication.ashx?method=logout`, getHeader());
     localStorage.removeItem("userData");
-    history.push("/");
+    history.push("/login");
+    window.location.reload();
   }
 
   const handleAccordionChange = (panel: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {

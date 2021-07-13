@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { FunctionComponent } from "react";
+import { RouteComponentProps } from "react-router";
 import axios from "axios";
 import {
   Button,
@@ -18,9 +19,9 @@ import { toast } from "react-toastify";
 import "../login.scss";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
-const Login = () => {
+
+const Login: FunctionComponent<RouteComponentProps> = (props) => {
   const SERVER_URL = process.env.REACT_APP_SERVER;
-  const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [open, setOpen] = useState(false);
@@ -40,8 +41,8 @@ const Login = () => {
 
     if (data.Token) {
       localStorage.setItem("userData", JSON.stringify(data));
-      toast.success(t("login.loginSuccessfully"));
-      history.push("/dashboard");
+      props.history.push('/dashboard');
+      window.location.reload();
     } else {
       toast.error(t("login.emailPasswordIncorrect"));
     }
@@ -55,7 +56,7 @@ const Login = () => {
         email: forgetEmail,
         language:
           localStorage.getItem("i18nextLng") === null ||
-          localStorage.getItem("i18nextLng") === "en"
+            localStorage.getItem("i18nextLng") === "en"
             ? "English"
             : "German",
         timestamp: new Date().toUTCString(),

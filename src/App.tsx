@@ -1,31 +1,24 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import AppBar from "./00-surveytester/appbar/appbar";
+import PrivateRoute from "./00-surveytester/router/PrivateRoute";
+import PublicRoute from "./00-surveytester/router/PublicRoute";
 import Login from "./01-login/login/login";
 import Dashboard from "./02-dashboard/dashboard";
 import "./App.scss";
+import "react-toastify/dist/ReactToastify.css";
 
-function App() {
+const App = () => {
   return (
-    <Router>
-      <div className="App">
-        <ToastContainer />
+    <div className="App">
+      <ToastContainer />
+      <Router>
         <Switch>
-          <Route exact path="/" component={Login} />
-          <Route path="/">
-            <AppBar />
-            <div className="container">
-              <Switch>
-                <Route path="/dashboard">
-                  <Dashboard />
-                </Route>
-              </Switch>
-            </div>
-          </Route>
+          <PublicRoute exact path="/" component={Login} />
+          <PublicRoute exact path="/login" component={Login} />
+          <PrivateRoute exact path='/dashboard' component={Dashboard} />
         </Switch>
-      </div>
-    </Router>
+      </Router>
+    </div>
   );
 }
 
