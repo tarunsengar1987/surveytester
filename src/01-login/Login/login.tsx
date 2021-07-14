@@ -30,17 +30,19 @@ const Login: FunctionComponent<RouteComponentProps> = (props) => {
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const { data } = await axios.post(
-      SERVER_URL + "API/V2/authentication.ashx?method=login",
+      SERVER_URL + "/API/V2/authentication.ashx?method=login",
       {
         email: email,
         password: password,
         timestamp: new Date().toUTCString(),
       }
     );
-    
+
     if (data.Status.Status === 'OK') {
       localStorage.setItem("token", data.Token);
+      localStorage.setItem("EmailForTestOnly", data.Email);
       props.history.push('/dashboard');
       window.location.reload();
     } else {

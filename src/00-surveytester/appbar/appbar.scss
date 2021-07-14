@@ -13,3 +13,21 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.topbarProjectList .MuiDrawer-paper{
+  top:60px;
+  height: calc(100% - 60px);
+}
+
+.treeCompanyName{
+  &:hover{ background-color: orange !important;
+    color:white !important;}
+}
+._treeFolder{
+  padding:  5px 0 2px  0 !important;
+}
+.treeProjectName{
+  padding:  5px 0 5px  0 !important;
+  &:hover{ background-color: #178acb !important;
+  color:white !important;}
+}

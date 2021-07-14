@@ -1,24 +1,36 @@
-
 import { useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { NotificationsNone, Language, Settings } from "@material-ui/icons";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
-import { Button, AppBar, Toolbar, Typography, IconButton, Drawer, CssBaseline, Avatar } from "@material-ui/core";
+import {
+  Button,
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Drawer,
+  CssBaseline,
+  Avatar,
+} from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import { TreeView, TreeItem } from "@material-ui/lab";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import { withStyles } from '@material-ui/core/styles';
-import MuiAccordion from '@material-ui/core/Accordion';
-import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
-import { CompanyModel, FolderModel, ProjectModel } from "../../04-projectlist/projectlist-model";
+import { withStyles } from "@material-ui/core/styles";
+import MuiAccordion from "@material-ui/core/Accordion";
+import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
+import {
+  CompanyModel,
+  FolderModel,
+  ProjectModel,
+} from "../../04-projectlist/projectlist-model";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import "./appbar.scss";
-import { fetchProjectsAPI } from "../../04-projectlist/projectlist-api"
+import { fetchProjectsAPI } from "../../04-projectlist/projectlist-api";
 import { getHeader } from "../apiHelper";
 
 const useStyles = makeStyles((theme) =>
@@ -57,31 +69,31 @@ const useStyles = makeStyles((theme) =>
 
 const Accordion = withStyles({
   root: {
-    border: '1px solid rgba(0, 0, 0, .125)',
-    boxShadow: 'none',
-    '&:not(:last-child)': {
+    border: "1px solid rgba(0, 0, 0, .125)",
+    boxShadow: "none",
+    "&:not(:last-child)": {
       borderBottom: 0,
     },
-    '&:before': {
-      display: 'none',
-    }
+    "&:before": {
+      display: "none",
+    },
   },
   expanded: {},
 })(MuiAccordion);
 
 const AccordionSummary = withStyles({
   root: {
-    backgroundColor: 'rgba(0, 0, 0, .03)',
-    borderBottom: '1px solid rgba(0, 0, 0, .125)',
+    backgroundColor: "rgba(0, 0, 0, .03)",
+    borderBottom: "1px solid rgba(0, 0, 0, .125)",
     marginBottom: -1,
     minHeight: 56,
-    '&$expanded': {
+    "&$expanded": {
       minHeight: 56,
     },
   },
   content: {
-    '&$expanded': {
-      margin: '0px',
+    "&$expanded": {
+      margin: "0px",
     },
   },
   expanded: {},
@@ -96,12 +108,17 @@ const AccordionDetails = withStyles((theme) => ({
 export default function Topbar() {
   const baseURL = process.env.REACT_APP_SERVER;
   const history = useHistory();
-  const classes = useStyles()
+  const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [companies, setCompanies] = useState<CompanyModel[]>([]);
-  const [expandedAllProjectTree, setExpandedAllProjectTree] = useState<string[]>(['root']);
-  const [epandedCloseProjectTree, setExpandedCloseProjectTree] = useState<string[]>(['root']);
-  const [expandedAccordion, setExpandedAccordion] = useState('favoriteProjects');
+  const [expandedAllProjectTree, setExpandedAllProjectTree] = useState<
+    string[]
+  >(["root"]);
+  const [expandedCloseProjectTree, setExpandedCloseProjectTree] = useState<
+    string[]
+  >(["root"]);
+  const [expandedAccordion, setExpandedAccordion] =
+    useState("favoriteProjects");
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -109,47 +126,64 @@ export default function Topbar() {
   }, []);
 
   const fetchProjects = async () => {
-    const { data } = await fetchProjectsAPI()
-    if (data.Status.Status === 'OK') {
+    const { data } = await fetchProjectsAPI();
+    if (data.Status?.Status === "OK") {
       setCompanies(data.Companies);
+    } else if (data.Status?.Status === "AUTHENTICATE") {
+      localStorage.removeItem("token");
+      history.push("/login");
+      window.location.reload();
     }
   };
 
   const renderProjectName = (projectName: string, projectId: string) => {
-    return <TreeItem label={projectName} nodeId={projectId} key={projectId} />
-  }
+    return <TreeItem label={projectName} nodeId={projectId} key={projectId} />;
+  };
 
-  const renderFolder = (folder: FolderModel) => {
+  const renderFolder = (folder: FolderModel, prefix: string) => {
     return (
-      <TreeItem label={folder.FolderName} nodeId={folder.IdFolder} key={folder.IdFolder}>
-        {
-          folder.Projects.map((project: ProjectModel) =>
-            renderProjectName(project.ProjectName, project.IdProject))
-        }
-        {
-          folder.SubFolders.map((folder: FolderModel) => renderFolder(folder))
-        }
+      <TreeItem
+        label={folder.FolderName}
+        nodeId={prefix + folder.IdFolder}
+        key={prefix + folder.IdFolder}
+      >
+        {folder.Projects.map((project: ProjectModel) =>
+          renderProjectName(project.ProjectName, prefix + project.IdProject)
+        )}
+        {folder.SubFolders.map((folder: FolderModel) =>
+          renderFolder(folder, prefix)
+        )}
       </TreeItem>
     );
   };
 
   const handleLogout = async () => {
-    await axios.get(`${baseURL}/API/V2/authentication.ashx?method=logout`, getHeader());
+    await axios.get(
+      `${baseURL}/API/V2/authentication.ashx?method=logout`,
+      getHeader()
+    );
     localStorage.removeItem("token");
     history.push("/login");
     window.location.reload();
-  }
-
-  const handleAccordionChange = (panel: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
-    setExpandedAccordion(newExpanded ? panel : '');
   };
 
-  const handleAllProjectsTreeChange = (event: React.ChangeEvent<{}>, nodeIds: string[]) => {
-    setExpandedAllProjectTree(nodeIds)
+  const handleAccordionChange =
+    (panel: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
+      setExpandedAccordion(newExpanded ? panel : "");
+    };
+
+  const handleAllProjectsTreeChange = (
+    event: React.ChangeEvent<{}>,
+    nodeIds: string[]
+  ) => {
+    setExpandedAllProjectTree(nodeIds);
   };
 
-  const handleClosedProjectsTreeChange = (event: React.ChangeEvent<{}>, nodeIds: string[]) => {
-    setExpandedCloseProjectTree(nodeIds)
+  const handleClosedProjectsTreeChange = (
+    event: React.ChangeEvent<{}>,
+    nodeIds: string[]
+  ) => {
+    setExpandedCloseProjectTree(nodeIds);
   };
 
   return (
@@ -157,7 +191,12 @@ export default function Topbar() {
       <div className="topbarWrapper">
         <CssBaseline />
         <Drawer open={open} onClose={() => setOpen(false)}>
-          <Accordion square expanded={expandedAccordion === 'favoriteProjects'} onChange={handleAccordionChange('favoriteProjects')}>
+          {/* ========================================================================*/}
+          <Accordion
+            square
+            expanded={expandedAccordion === "favoriteProjects"}
+            onChange={handleAccordionChange("favoriteProjects")}
+          >
             <AccordionSummary id="favoriteProjects-header">
               <Typography>{t("appBar.favoriteProjects")}</Typography>
             </AccordionSummary>
@@ -172,7 +211,10 @@ export default function Topbar() {
                   {companies.map((company: CompanyModel) => (
                     <span key={company.IdCompany}>
                       {company.FavoriteProjects.map((project: ProjectModel) =>
-                        renderProjectName(project.ProjectName, project.IdProject)
+                        renderProjectName(
+                          project.ProjectName,
+                          project.IdProject
+                        )
                       )}
                     </span>
                   ))}
@@ -180,7 +222,12 @@ export default function Topbar() {
               )}
             </AccordionDetails>
           </Accordion>
-          <Accordion square expanded={expandedAccordion === 'recentProjects'} onChange={handleAccordionChange('recentProjects')}>
+          {/* ========================================================================*/}
+          <Accordion
+            square
+            expanded={expandedAccordion === "recentProjects"}
+            onChange={handleAccordionChange("recentProjects")}
+          >
             <AccordionSummary id="recentProjects-header">
               <Typography>{t("appBar.recentProjects")}</Typography>
             </AccordionSummary>
@@ -195,7 +242,10 @@ export default function Topbar() {
                   {companies.map((company: CompanyModel) => (
                     <span key={company.IdCompany}>
                       {company.RecentProjects.map((project: ProjectModel) =>
-                        renderProjectName(project.ProjectName, project.IdProject)
+                        renderProjectName(
+                          project.ProjectName,
+                          project.IdProject
+                        )
                       )}
                     </span>
                   ))}
@@ -203,7 +253,12 @@ export default function Topbar() {
               )}
             </AccordionDetails>
           </Accordion>
-          <Accordion square expanded={expandedAccordion === 'allProjects'} onChange={handleAccordionChange('allProjects')}>
+          {/* ========================================================================*/}
+          <Accordion
+            square
+            expanded={expandedAccordion === "allProjects"}
+            onChange={handleAccordionChange("allProjects")}
+          >
             <AccordionSummary id="allProjects-header">
               <Typography>{t("appBar.allProjects")}</Typography>
             </AccordionSummary>
@@ -217,22 +272,33 @@ export default function Topbar() {
                   expanded={expandedAllProjectTree}
                   onNodeToggle={handleAllProjectsTreeChange}
                 >
-                  {companies.map((company: CompanyModel) => (
-                    <TreeItem
-                      label={company.CompanyName}
-                      nodeId={company.IdCompany}
-                      key={company.IdCompany}
-                    >
-                      {company.AllProjects.map((allProject: FolderModel) =>
-                        renderFolder(allProject)
+                  {companies.length > 1
+                    ? companies.map((company: CompanyModel) => (
+                        <TreeItem
+                          label={company.CompanyName}
+                          nodeId={company.IdCompany}
+                          key={company.IdCompany}
+                        >
+                          {company.AllProjects.map((allProject: FolderModel) =>
+                            renderFolder(allProject, "allProjects_")
+                          )}
+                        </TreeItem>
+                      ))
+                    : companies.map((company: CompanyModel) =>
+                        company.AllProjects.map((allProject: FolderModel) =>
+                          renderFolder(allProject, "allProjects_")
+                        )
                       )}
-                    </TreeItem>
-                  ))}
                 </TreeView>
               )}
             </AccordionDetails>
           </Accordion>
-          <Accordion square expanded={expandedAccordion === 'closedProjects'} onChange={handleAccordionChange('closedProjects')}>
+          {/* ========================================================================*/}
+          <Accordion
+            square
+            expanded={expandedAccordion === "closedProjects"}
+            onChange={handleAccordionChange("closedProjects")}
+          >
             <AccordionSummary id="closedProjects-header">
               <Typography>{t("appBar.closedProjects")}</Typography>
             </AccordionSummary>
@@ -243,24 +309,43 @@ export default function Topbar() {
                   defaultCollapseIcon={<ExpandMoreIcon />}
                   defaultExpanded={["root"]}
                   defaultExpandIcon={<ChevronRightIcon />}
-                  expanded={epandedCloseProjectTree}
+                  expanded={expandedCloseProjectTree}
                   onNodeToggle={handleClosedProjectsTreeChange}
                 >
-                  {companies.map((company: CompanyModel) => (
-                    <TreeItem
-                      label={company.CompanyName}
-                      nodeId={company.IdCompany}
-                      key={company.IdCompany}
-                    >
-                      {company.ClosedProjects.map((allProject: FolderModel) =>
-                        renderFolder(allProject)
-                      )}
-                    </TreeItem>
-                  ))}
+                  {
+                  companies.length>1 ?
+                  companies.map(
+                    (company: CompanyModel) =>
+                      company?.ClosedProjects?.length > 0 && (
+                        <TreeItem
+                          label={company.CompanyName}
+                          nodeId={company.IdCompany}
+                          key={company.IdCompany}
+                        >
+                          {company.ClosedProjects.map(
+                            (closedProject: FolderModel) =>
+                              renderFolder(closedProject, "closedProjects_")
+                          )}
+                        </TreeItem>
+                      )
+                  )
+                  :
+                  companies.map(
+                    (company: CompanyModel) =>
+                      company?.ClosedProjects?.length > 0 && (
+                          company.ClosedProjects.map(
+                            (closedProject: FolderModel) =>
+                              renderFolder(closedProject, "closedProjects_")
+                          )
+                      )
+                  )
+                  
+                  }
                 </TreeView>
               )}
             </AccordionDetails>
           </Accordion>
+          {/* ========================================================================*/}
         </Drawer>
         <AppBar position="static" color="primary">
           <Toolbar>
