@@ -1,16 +1,20 @@
 .main-bg {
   background-image: url("../00-surveytester/assets/ship.jpg");
   height: 100vh;
+  text-align: center;
 }
 
-.login-new {
+.login-form {
   background-color: rgba(0, 0, 0, 0.6);
-  width: 30%;
+  max-width: 450px;
   margin-left: 100px;
   height: 100vh;
+  width: 100%;
+  padding-top: 40px;
+  position: relative;
 }
 
-.login-new a,
+.login-form a,
 .MuiFormControlLabel-root {
   color: #fff;
 }
@@ -44,4 +48,74 @@
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.freetrail,
+.freetrail .MuiPaper-root.MuiCard-root.MuiPaper-elevation1.MuiPaper-rounded {
+  position: relative;
+  height: 100vh;
+}
+.freetrail .MuiPaper-root.MuiCard-root.MuiPaper-elevation1.MuiPaper-rounded {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  width: 50%;
+  margin-right: auto;
+}
+.freetrailform {
+  max-width: 400px;
+  margin: 0 auto;
+  width: 100%;
+}
+button.freetileclose {
+  margin-left: auto;
+  display: inherit;
+}
+svg.MuiSvgIcon-root {
+  width: 40px;
+  height: auto;
+
+  & path {
+    color: #fff;
+  }
+}
+button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.freetrailsubmit {
+  background: #7bbd00;
+  color: #fff;
+  font-size: 20px;
+}
+ul.loginformterms {
+  list-style: none;
+  padding: 8px;
+  margin: 30px 0;
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  bottom: 30px;
+  & li {
+    display: inline-block;
+  }
+}
+span.pipe {
+  color: #fff;
+  margin: 0 8px;
+}
+button#signin {
+  margin-bottom: 15px;
+}
+.buttons {
+  margin-top: 17px;
+}
+.MuiIconButton-label svg.MuiSvgIcon-root {
+  width: 20px;
+  height: auto;
+}
+.login-form .MuiGrid-root.MuiGrid-item {
+  color: #fff;
+  margin: 18px 0;
+}
+
+.color-white{
+  color: #fff;
 }

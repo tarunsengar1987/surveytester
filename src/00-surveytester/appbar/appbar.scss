@@ -14,20 +14,99 @@
   justify-content: space-between;
 }
 
-.topbarProjectList .MuiDrawer-paper{
-  top:60px;
+.topbarProjectList .MuiDrawer-paper {
+  top: 60px;
   height: calc(100% - 60px);
 }
 
-.treeCompanyName{
-  &:hover{ background-color: orange !important;
-    color:white !important;}
+.treeCompanyName {
+  &:hover {
+    background-color: orange !important;
+    color: white !important;
+  }
 }
-._treeFolder{
-  padding:  5px 0 2px  0 !important;
+._treeFolder {
+  padding: 5px 0 2px 0 !important;
 }
-.treeProjectName{
-  padding:  5px 0 5px  0 !important;
-  &:hover{ background-color: #178acb !important;
-  color:white !important;}
+.treeProjectName {
+  padding: 5px 0 5px 0 !important;
+  &:hover {
+    background-color: #178acb !important;
+    color: white !important;
+  }
+}
+
+.MuiAppBar-colorPrimary {
+  color: #000 !important;
+  background-color: #fff !important;
+}
+.top-bar-menu {
+  margin-right: auto;
+  margin-left: 20px;
+  & .MuiTypography-root {
+    display: inline-block !important;
+  }
+  & .MuiButton-text {
+    padding: 0px 10px;
+    border-left: 1px solid #000;
+    line-height: 51px;
+    border-radius: 0;
+    position: relative;
+    top: 0px;
+  }
+  & .test-runs-btn {
+    margin-right: 10px !important;
+    border-right: 1px solid #000 !important;
+  }
+  & .MuiButton-containedPrimary {
+    background-color: #178acb !important;
+  }
+  & .MuiButton-root {
+    text-transform: unset !important;
+  }
+}
+
+.right-side-menu{
+  margin-left: auto !important;
+  & .MuiButtonBase-root {
+    display: inline-block !important;
+  }
+}
+.MuiPopover-paper {
+  top: 56px !important;
+  width: 370px;
+  left: auto !important;
+  right: 0;
+}
+.MuiList-padding {border: 1px solid #ddd !important;  }
+.MuiMenuItem-root { padding: 15px 20px !important; border-bottom: 1px solid #ddd !important; text-align: center !important; display: block !important;}
+.MuiMenuItem-root svg.MuiSvgIcon-root {
+  fill: #000;
+  margin-right: 10px;
+  width: 30px;
+  vertical-align: middle;
+}
+.MuiMenuItem-root:last-child { border: none !important;}
+.username {
+  display: inline-block;
+  text-align: left;
+}
+.username h5 { font-size: 22px; font-weight: 900; color: #03a9f4;}
+.username h6 { font-size: 18px; font-weight: 700; color: #aaa; margin-top: 30px;}
+.profile-icon { float: left;}
+.MuiMenuItem-root .profile-icon svg.MuiSvgIcon-root {
+  width: 90px;
+}
+.header-logo {
+  width: 118px;
+  height: auto;
+  cursor: pointer;
+}
+.MuiToolbar-regular {
+  height: 50px !important;
+  min-height: 1px !important;
+}
+
+svg.MuiSvgIcon-root path{
+  color: black !important;
 }

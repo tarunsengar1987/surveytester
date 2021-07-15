@@ -12,7 +12,10 @@ import {
   Drawer,
   CssBaseline,
   Avatar,
+  Menu,
+  MenuItem
 } from "@material-ui/core";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import MenuIcon from "@material-ui/icons/Menu";
 import { TreeView, TreeItem } from "@material-ui/lab";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -120,7 +123,8 @@ export default function Topbar() {
   const [expandedAccordion, setExpandedAccordion] =
     useState("favoriteProjects");
   const { t } = useTranslation();
-
+  const [projectItd, setProjectItd] = useState<string>('');
+  const [menu, setMenu] = useState<null | HTMLElement>(null);
   useEffect(() => {
     fetchProjects();
   }, []);
@@ -137,7 +141,7 @@ export default function Topbar() {
   };
 
   const renderProjectName = (projectName: string, projectId: string) => {
-    return <TreeItem label={projectName} nodeId={projectId} key={projectId} />;
+    return <TreeItem label={projectName} nodeId={projectId} key={projectId} onClick={() => handleProject(projectId)} />;
   };
 
   const renderFolder = (folder: FolderModel, prefix: string) => {
@@ -185,6 +189,39 @@ export default function Topbar() {
   ) => {
     setExpandedCloseProjectTree(nodeIds);
   };
+
+  const handleProject = (projectId: string) => {
+    setProjectItd(projectId)
+    setOpen(false)
+    history.push(`/project-details/${projectId}`);
+  };
+
+  const handleProjectDetails = () => {
+    history.push(`/project-details/${projectItd}`);
+  };
+
+  const handleIssues = () => {
+    history.push(`/project-issues/${projectItd}`);
+  };
+
+  const handlePages = () => {
+    history.push(`/project-pages/${projectItd}`);
+  };
+
+  const handleTestRuns = () => {
+    history.push(`/project-testruns/${projectItd}`);
+  };
+
+  const handleTestSurvey = () => {
+  };
+
+  const handleProfileMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setMenu(event.currentTarget);
+  };
+
+  const handleHeaderLogo = () => {
+    history.push(`/dashboard`);
+  }
 
   return (
     <div className="topbar">
@@ -274,21 +311,21 @@ export default function Topbar() {
                 >
                   {companies.length > 1
                     ? companies.map((company: CompanyModel) => (
-                        <TreeItem
-                          label={company.CompanyName}
-                          nodeId={company.IdCompany}
-                          key={company.IdCompany}
-                        >
-                          {company.AllProjects.map((allProject: FolderModel) =>
-                            renderFolder(allProject, "allProjects_")
-                          )}
-                        </TreeItem>
-                      ))
-                    : companies.map((company: CompanyModel) =>
-                        company.AllProjects.map((allProject: FolderModel) =>
+                      <TreeItem
+                        label={company.CompanyName}
+                        nodeId={company.IdCompany}
+                        key={company.IdCompany}
+                      >
+                        {company.AllProjects.map((allProject: FolderModel) =>
                           renderFolder(allProject, "allProjects_")
-                        )
-                      )}
+                        )}
+                      </TreeItem>
+                    ))
+                    : companies.map((company: CompanyModel) =>
+                      company.AllProjects.map((allProject: FolderModel) =>
+                        renderFolder(allProject, "allProjects_")
+                      )
+                    )}
                 </TreeView>
               )}
             </AccordionDetails>
@@ -313,40 +350,43 @@ export default function Topbar() {
                   onNodeToggle={handleClosedProjectsTreeChange}
                 >
                   {
-                  companies.length>1 ?
-                  companies.map(
-                    (company: CompanyModel) =>
-                      company?.ClosedProjects?.length > 0 && (
-                        <TreeItem
-                          label={company.CompanyName}
-                          nodeId={company.IdCompany}
-                          key={company.IdCompany}
-                        >
-                          {company.ClosedProjects.map(
-                            (closedProject: FolderModel) =>
-                              renderFolder(closedProject, "closedProjects_")
-                          )}
-                        </TreeItem>
-                      )
-                  )
-                  :
-                  companies.map(
-                    (company: CompanyModel) =>
-                      company?.ClosedProjects?.length > 0 && (
-                          company.ClosedProjects.map(
-                            (closedProject: FolderModel) =>
-                              renderFolder(closedProject, "closedProjects_")
+                    companies.length > 1 ?
+                      companies.map(
+                        (company: CompanyModel) =>
+                          company?.ClosedProjects?.length > 0 && (
+                            <TreeItem
+                              label={company.CompanyName}
+                              nodeId={company.IdCompany}
+                              key={company.IdCompany}
+                            >
+                              {company.ClosedProjects.map(
+                                (closedProject: FolderModel) =>
+                                  renderFolder(closedProject, "closedProjects_")
+                              )}
+                            </TreeItem>
                           )
                       )
-                  )
-                  
+
+                      :
+                      companies.map(
+                        (company: CompanyModel) =>
+                          company?.ClosedProjects?.length > 0 && (
+                            company.ClosedProjects.map(
+                              (closedProject: FolderModel) =>
+                                renderFolder(closedProject, "closedProjects_")
+                            )
+                          )
+                      )
+
                   }
+
                 </TreeView>
               )}
             </AccordionDetails>
           </Accordion>
           {/* ========================================================================*/}
         </Drawer>
+
         <AppBar position="static" color="primary">
           <Toolbar>
             <IconButton
@@ -357,28 +397,81 @@ export default function Topbar() {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" className={classes.title}>
-              {t("surveyTester")}
-            </Typography>
-            <Button color="inherit">
-              {" "}
-              <NotificationsNone />
-            </Button>
-            <Button color="inherit">
-              <Language />
-            </Button>
-            <Button color="inherit">
-              <Settings />
-            </Button>
-            <Button className={classes.root}>
-              <Avatar className={classes.purple}>AD</Avatar>
-            </Button>
-            <Button color="inherit" onClick={handleLogout}>
-              <ExitToAppIcon />
-            </Button>
+
+            <img className="header-logo" alt="logo" src="https://cdn.surveytester.com/Images/Logo/SurveyTester_Logo.svg?Version=5423"
+              onClick={handleHeaderLogo} />
+
+            {projectItd && (
+              <div className="top-bar-menu mr-auto">
+                <Typography variant="h6">
+                  <Button color="inherit" onClick={handleProjectDetails}>
+                    Project Details
+                  </Button>
+                </Typography>
+
+                <Typography variant="h6">
+                  <Button color="inherit" onClick={handleIssues}>
+                    Issues(0)
+                  </Button>
+                </Typography>
+
+                <Typography variant="h6">
+                  <Button color="inherit" onClick={handlePages}>
+                    Pages {'&'} Rotuing
+                  </Button>
+                </Typography>
+
+                <Typography variant="h6" className="test-runs-btn">
+                  <Button color="inherit" onClick={handleTestRuns}>
+                    Test runs
+                  </Button>
+                </Typography>
+
+                <Button variant="contained" color="primary" onClick={handleTestSurvey}>
+                  Test Survey
+                </Button>
+              </div>
+            )}
+
+            <div className="right-side-menu">
+              <Button color="inherit">
+                {" "}
+                <NotificationsNone />
+              </Button>
+              <Button color="inherit">
+                <Language />
+              </Button>
+              <Button color="inherit">
+                <Settings />
+              </Button>
+              <Button className={classes.root} onClick={handleProfileMenu}>
+                <Avatar className={classes.purple}>AD</Avatar>
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={menu}
+                keepMounted
+                open={Boolean(menu)}
+                onClose={() => setMenu(null)}
+              >
+                <MenuItem>
+                  <div className="profile-icon">
+                    <AccountBoxIcon />
+                  </div>
+                  <div className="username">
+                    <Typography variant="h5">Survey Tester</Typography>
+                    <Typography variant="h6">demo@gmail.com</Typography>
+                  </div>
+                </MenuItem>
+                <MenuItem>My account</MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  <ExitToAppIcon /> Sign out
+                </MenuItem>
+              </Menu>
+            </div>
           </Toolbar>
         </AppBar>
       </div>
-    </div>
+    </div >
   );
 }

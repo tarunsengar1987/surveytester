@@ -7,7 +7,7 @@ const Dashboard: FunctionComponent<RouteComponentProps> = () => {
     <div>
       <h1>Welcome to dashboard</h1>
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

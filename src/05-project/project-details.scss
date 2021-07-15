@@ -1,0 +1,7 @@
+.project-details {
+  text-align: left !important;
+  & .MuiTab-wrapper{
+      align-items: unset !important;
+      text-align: left !important;
+  }
+}
