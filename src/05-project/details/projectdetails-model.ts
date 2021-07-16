@@ -5,15 +5,16 @@ export type ProjectDetailsModel = {
   IsClosed: boolean
   IsFavorite: boolean
   IsWatched: boolean
-  LastAccess: Date
-  LastUpdate: Date
+  LastAccess: string
+  LastUpdate: string
   PlannedFinishDate: string;
   ProjectClassificationFieldSet: ProjectClassificationFieldSetModel
   ProjectCustomerSettings: [ProjectCustomerSettingsModel]
-  ProjectMainLanguage: [ProjectMainLanguageModel]
+  ProjectMainLanguage: ProjectMainLanguageModel
   ProjectManager: ProjectManagerModel
   ProjectType: ProjectTypeModel
   Status: StatusModel
+  SurveyLink: string
 };
 
 export type ProjectClassificationFieldSetModel = {

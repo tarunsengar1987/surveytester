@@ -6,8 +6,8 @@
 
 .login-form {
   background-color: rgba(0, 0, 0, 0.6);
-  max-width: 450px;
-  margin-left: 100px;
+  max-width: 380px;
+  margin-left: 160px;
   height: 100vh;
   width: 100%;
   padding-top: 40px;
@@ -18,17 +18,26 @@
 .MuiFormControlLabel-root {
   color: #fff;
 }
-
+.MuiFormControlLabel-root {
+  vertical-align: top !important;
+  display: inline-block !important;
+}
 .MuiCheckbox-root {
   color: #fff !important;
+}
+.MuiInputLabel-formControl {
+  top: -5px !important;
 }
 
 .MuiInputBase-input {
   background-color: #fff !important;
   border-radius: 6px;
-  padding: 8px 20px !important;
+  padding: 6px 20px !important;
   height: auto !important;
-  line-height: 34px !important;
+  line-height: 32px !important;
+}
+.MuiFormLabel-root {
+  font-size: 14px !important;
 }
 
 .btn {
@@ -38,8 +47,18 @@
   text-transform: unset !important;
 }
 
+.btn-blue,
 .btn-green {
-  background: #3fd52b !important;
+  border-radius: 5px !important;
+  font-size: 15pt !important;
+  border: 2px solid #fff !important;
+  font-weight: 400 !important;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+}
+
+.btn-green {
+  background-color: #7bbd00 !important;
 }
 
 .btn-blue {
@@ -86,17 +105,31 @@ button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.freetrailsubmit {
 ul.loginformterms {
   list-style: none;
   padding: 8px;
-  margin: 30px 0;
+  margin: 0;
   text-align: center;
   position: absolute;
   width: 100%;
   bottom: 0;
   left: 0;
-  bottom: 30px;
+  bottom: 0;
   & li {
     display: inline-block;
+    margin-right: 15px;
+  }
+  & li:last-child {
+    margin-right: 0;
+  }
+  a {
+    font-size: 12px;
   }
 }
+.MuiButton-root {
+  text-transform: none !important;
+}
+.card-img {
+  width: 230px;
+}
+
 span.pipe {
   color: #fff;
   margin: 0 8px;
@@ -116,6 +149,29 @@ button#signin {
   margin: 18px 0;
 }
 
-.color-white{
+.color-white {
   color: #fff;
+}
+.logo-img {
+  width: 180px;
+  margin-bottom: 30px;
+}
+svg.MuiSvgIcon-root path {
+  color: #fff !important;
+}
+
+.PrivateSwitchBase-root-5 {
+  padding: 0 !important;
+  margin-right: 10px !important;
+}
+
+a.moreinfo {
+  color: white;
+  text-decoration: none;
+  border: 1px solid #888888;
+  border-radius: 3px;
+  padding: 0 4px;
+}
+a.moreinfo:hover {
+  background-color: #7bbd00;
 }

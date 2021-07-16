@@ -5,6 +5,8 @@ import axios from "axios";
 import Slide from "@material-ui/core/Slide";
 import { Card, CardContent, Typography } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
+import freetrailimage from '../../00-surveytester/assets/st.png'
+import logo from '../../00-surveytester/assets/logo.png'
 import {
   Button,
   TextField,
@@ -21,7 +23,7 @@ import { toast } from "react-toastify";
 import "../login.scss";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
-import { MDBRow, MDBCol } from 'mdb-react-ui-kit';
+import { MDBRow, MDBCol } from "mdb-react-ui-kit";
 
 const Login: FunctionComponent<RouteComponentProps> = (props) => {
   const SERVER_URL = process.env.REACT_APP_SERVER;
@@ -34,7 +36,14 @@ const Login: FunctionComponent<RouteComponentProps> = (props) => {
   const [isShowFreeTrail, setisShowFreeTrial] = useState(false);
   const [isShowAfterFreeTrail, setisShowAfterFreeTrail] = useState(false);
   const { t } = useTranslation();
-
+  const [trialForm, setTrialForm] = useState({
+    companyName: "",
+    firstName: "",
+    lastName: "",
+    businessEmailAddress: "",
+    surveyProvider: "",
+    isAccept: false
+  });
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -61,25 +70,39 @@ const Login: FunctionComponent<RouteComponentProps> = (props) => {
   const handleFreetrail = () => {
     setisShowlogin(false);
     setisShowFreeTrial(true);
-    setisShowAfterFreeTrail(false)
+    setisShowAfterFreeTrail(false);
+    setTrialForm({
+      ...trialForm, companyName: '', firstName: '', lastName: '', businessEmailAddress: '', surveyProvider: '', isAccept: false
+    });
   };
 
   const handleCloseFreeTrail = () => {
     setisShowlogin(true);
     setisShowFreeTrial(false);
-    setisShowAfterFreeTrail(false)
+    setisShowAfterFreeTrail(false);
   };
 
-  const handleFreeTrailSubmit = () => {
+  const handleFreeTrailSubmit = (e: any) => {
+    e.preventDefault();
     setisShowlogin(false);
     setisShowFreeTrial(false);
     setisShowAfterFreeTrail(true);
-  }
+  };
 
   const handleFreeTrailSucessClose = () => {
     setisShowlogin(true);
     setisShowFreeTrial(false);
     setisShowAfterFreeTrail(false);
+  };
+
+  let name, value;
+  const handleFreeTrailRegisterForm = (e: any) => {
+    debugger
+    console.log(e);
+    name = e.target.name;
+    value = e.target.value;
+
+    setTrialForm({ ...trialForm, [name]: value });
   };
 
   const handleSend = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -110,9 +133,10 @@ const Login: FunctionComponent<RouteComponentProps> = (props) => {
     <div className="main-bg">
       {isShowLogin && (
         <div className="login-form">
-
-          <MDBRow className='mt-3'>
-            <MDBCol lg='12'>
+          <img className="logo-img" alt="logo" src={logo}
+          />
+          <MDBRow className="mt-3">
+            <MDBCol lg="12">
               <Link
                 href="#"
                 variant="body1"
@@ -132,8 +156,8 @@ const Login: FunctionComponent<RouteComponentProps> = (props) => {
           </MDBRow>
 
           <form className="login" onSubmit={(event) => handleLogin(event)}>
-            <MDBRow className='mt-2'>
-              <MDBCol lg='12'>
+            <MDBRow className="mt-2">
+              <MDBCol lg="12">
                 <TextField
                   variant="outlined"
                   margin="normal"
@@ -142,14 +166,13 @@ const Login: FunctionComponent<RouteComponentProps> = (props) => {
                   type="email"
                   label={t("login.emailAddress")}
                   name="email"
-                  autoComplete="email"
                   autoFocus
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </MDBCol>
 
-              <MDBCol lg='12'>
+              <MDBCol lg="12">
                 <TextField
                   variant="outlined"
                   margin="normal"
@@ -158,21 +181,20 @@ const Login: FunctionComponent<RouteComponentProps> = (props) => {
                   label={t("login.password")}
                   type="password"
                   id="password"
-                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </MDBCol>
             </MDBRow>
 
-            <MDBRow className='mt-2'>
-              <MDBCol lg='12'>
+            <MDBRow className="mt-2">
+              <MDBCol lg="12">
                 <Link className="cursor-pointer" onClick={() => setOpen(true)}>
                   {t("login.forgotPassword")}
                 </Link>
               </MDBCol>
 
-              <MDBCol lg='12' className='mt-2'>
+              <MDBCol lg="12" className="mt-2 mb-2">
                 {/* // TODO: Keep me signed in functionality*/}
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
@@ -180,42 +202,43 @@ const Login: FunctionComponent<RouteComponentProps> = (props) => {
                 />
               </MDBCol>
 
-              <MDBCol lg='12' className='mt-2'>
+              <MDBCol lg="12" className="mt-2">
                 <Button
                   name="signin"
                   value="Login"
                   type="submit"
                   id="signin"
-                  className="btn btn-green"
+                  className="btn btn-green mb-5"
                   color="primary"
                 >
                   {t("login.signIn")}
                 </Button>
               </MDBCol>
 
-              <MDBCol lg='12' className='mt-3'>
+              <MDBCol lg="12" className="mt-3">
                 {/* // TODO: New User UI functionality*/}
                 <Link href="#" variant="body2">
                   {t("login.dontHaveAccount")}
                 </Link>
               </MDBCol>
 
-              <MDBCol lg='12' className='mt-2'>
+              <MDBCol lg="12" className="mt-2">
                 {/* // TODO: New User UI functionality*/}
-                <label className='color-white'>{t("login.startUsingFreeTrial")} </label>
+                <label className="color-white">
+                  {t("login.startUsingFreeTrial")}{" "}
+                </label>
               </MDBCol>
 
-              <MDBCol lg='12' className='mt-4'>
+              <MDBCol lg="12" className="mt-4">
                 {/* // TODO: New User UI functionality*/}
                 <Button
-                  className="btn btn-blue"
+                  className="btn btn-blue mt-3"
                   color="primary"
                   onClick={handleFreetrail}
                 >
                   {t("login.freeTrial")}
                 </Button>
               </MDBCol>
-
             </MDBRow>
 
             <ul className="loginformterms">
@@ -286,95 +309,130 @@ const Login: FunctionComponent<RouteComponentProps> = (props) => {
               <Button className="freetileclose" onClick={handleCloseFreeTrail}>
                 <CancelIcon />
               </Button>
-              <h3>Today's Best Decision </h3>
+              <h3>{t("login.label1")} </h3>
               <h6 className="mt-5 mb-3">
-                Use 2X4 Survey Tester for free with our 14 days trail and see
-                for your self .<br />
-                Your Trial will end automitically{" "}
+                {t("login.label2")} .<br />
+                {t("login.label3")}{" "}
               </h6>
 
               <div className="freetrailform">
                 <CardContent>
-                  <form>
-                    <MDBRow className='mb-3'>
-                      <MDBCol lg='12' className='mb-3'>
-                        <TextField
+                  <form onSubmit={(event) => handleFreeTrailSubmit(event)}>
+                    <MDBRow className="mb-3">
+                      <MDBCol lg="12" className="">
+                        <TextField className="mb-0"
                           variant="outlined"
-                          placeholder="Company Address"
+                          margin="normal"
                           required
-                          label="Company Address"
+                          name="companyName"
+                          label={t("login.label4")}
+                          type="text"
+                          id="companyName"
+                          value={trialForm.companyName}
+                          onChange={handleFreeTrailRegisterForm}
+                          placeholder={t("login.label4")}
                           fullWidth
                         />
                       </MDBCol>
 
-                      <MDBCol lg='12' className='mb-3'>
-                        <TextField
+                      <MDBCol lg="12" className="">
+                        <TextField className="mb-0"
                           variant="outlined"
-                          placeholder="First Name"
+                          margin="normal"
                           required
-                          label="First Name"
+                          name="firstName"
+                          label={t("login.label5")}
+                          type="text"
+                          id="firstName"
+                          value={trialForm.firstName}
+                          onChange={handleFreeTrailRegisterForm}
+                          placeholder={t("login.label5")}
                           fullWidth
                         />
                       </MDBCol>
 
-                      <MDBCol lg='12' className='mb-3'>
-                        <TextField
+                      <MDBCol lg="12" className="">
+                        <TextField className="mb-0"
                           variant="outlined"
-                          placeholder="lastname"
+                          margin="normal"
                           required
-                          label="Last Name "
+                          name="lastName"
+                          label={t("login.label6")}
+                          type="text"
+                          id="lastName"
+                          value={trialForm.lastName}
+                          onChange={handleFreeTrailRegisterForm}
+                          placeholder={t("login.label6")}
                           fullWidth
                         />
                       </MDBCol>
 
-                      <MDBCol lg='12' className='mb-3'>
-                        <TextField
+                      <MDBCol lg="12" className="">
+                        <TextField className="mb-0"
                           variant="outlined"
-                          placeholder="Business Emaill Address"
+                          margin="normal"
                           required
-                          label="Business Emaill Address"
+                          name="businessEmailAddress"
+                          label={t("login.label7")}
+                          type="email"
+                          id="businessEmailAddress"
+                          value={trialForm.businessEmailAddress}
+                          onChange={handleFreeTrailRegisterForm}
+                          placeholder={t("login.label7")}
                           fullWidth
                         />
                       </MDBCol>
 
-                      <MDBCol lg='12' className='mb-3'>
-                        <TextField
+                      <MDBCol lg="12" className="">
+                        <TextField className="mb-0"
                           variant="outlined"
-                          placeholder="Survey Provider"
+                          margin="normal"
                           required
-                          label="Survey Provider"
+                          name="surveyProvider"
+                          label={t("login.label8")}
+                          type="text"
+                          id="surveyProvider"
+                          value={trialForm.surveyProvider}
+                          onChange={handleFreeTrailRegisterForm}
+                          placeholder={t("login.label8")}
                           fullWidth
                         />
                       </MDBCol>
 
-                      <MDBCol lg='12' className='mb-3'>
+                      <MDBCol lg="12" className="mt-3 mb-3">
                         <FormControlLabel
                           control={
                             <Checkbox
-                              value="remember"
                               color="secondary"
                               required
+                              name="isAccept"
+                              id="reisAcceptmember"
+                              checked={trialForm.isAccept}
+                              onChange={(event) => setTrialForm({ ...trialForm, isAccept: event.target.checked })}
                             />
                           }
-                          label="I accept the Survey Tester terms of use and privacy policy "
+                          label={t("login.label9")}
                         />
                       </MDBCol>
 
-                      <MDBCol lg='12' className='mb-3'>
+                      <MDBCol lg="12" className="">
                         <Button
                           type="submit"
+                          name="register"
+                          id="userregisteration"
                           variant="contained"
-                          className="freetrailsubmit"
-                          onClick={handleFreeTrailSubmit}
+                          value="userregisteration"
+                          className="freetrailsubmit btn-green mb-3"
                         >
-                          Free 14 Day's Trial
+                          {t("login.label10")}
                         </Button>
                       </MDBCol>
 
-                      <MDBCol lg='12' className='mb-3'>
+                      <MDBCol lg="12" className="">
                         <p>
-                          or watch the initial walkthru{" "}
-                          <a href="/trainingvideo">training video</a> first.
+                          {t("login.label11")}{" "}
+                          <a className="moreinfo" href="/trainingvideo">{t("login.label12")}</a>{" "}
+                          {t("login.label13")}.
                         </p>
                       </MDBCol>
                     </MDBRow>
@@ -390,35 +448,29 @@ const Login: FunctionComponent<RouteComponentProps> = (props) => {
         <div className="freetrail">
           <Slide direction="right" in={slideIn} mountOnEnter unmountOnExit>
             <Card>
-              <Button className="aftertrail" onClick={handleFreeTrailSucessClose}>
+              <Button
+                className="freetileclose"
+                onClick={handleFreeTrailSucessClose}
+              >
                 <CancelIcon />
               </Button>
-              <Typography variant="h4">Today's Best Decision </Typography>
-              <Typography variant="h6">
-                You'r only few minute away to start your journey to grether survey
-                quality <br />
+              <Typography variant="h4" className="mb-5">{t("login.label1")} </Typography>
+              <Typography variant="body2" className="mb-4">
+                {t("login.label14")} <br />
               </Typography>
-              <Typography variant="h6">
-                To start your test-phase right now,please click on the
-                confirmation link in the mail we send to .if we cannot find the
-                email in your inbox ,please check your spam folder .
-              </Typography>
-              <Typography variant="h6">
-                Please also check some of our training videos to get started.
-                <figure>
-                  {/* <img src={afterlogin} alt="registerpics" /> */}
+              <Typography variant="body2" className="mb-4">{t("login.label15")}</Typography>
+              <span className="mb-4">
+                {t("login.label16")}
+                <figure className="mt-4">
+                  <img className="card-img" src={freetrailimage} alt="registerpics" />
                 </figure>
-              </Typography>
-              <Typography variant="h6">
-                If you have any question during the test, please use our support
-                system and we are happy to help you.
-              </Typography>
-              <Typography variant="h6">Your Survey tester team</Typography>
+              </span>
+              <Typography variant="body2" className="mb-4">{t("login.label17")}</Typography>
+              <Typography variant="body2">{t("login.label18")}</Typography>
             </Card>
           </Slide>
         </div>
       )}
-
     </div>
   );
 };

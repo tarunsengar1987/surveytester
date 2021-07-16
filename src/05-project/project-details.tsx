@@ -18,6 +18,7 @@ import ScreenShotDevices from "./details/screenshotdevices/screenshotdevices";
 import LifeCycle from "./details/lifecycle/lifecycle";
 import "./project-details.scss";
 import { MDBRow, MDBCol } from 'mdb-react-ui-kit';
+import { useTranslation } from "react-i18next";
 
 type Params = {
   projectId: string;
@@ -65,6 +66,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const ProjetDetails: FunctionComponent<RouteComponentProps> = (props) => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const { projectId } = useParams<Params>();
@@ -77,7 +79,7 @@ const ProjetDetails: FunctionComponent<RouteComponentProps> = (props) => {
     <div className='mt-3 project-details'>
       <MDBRow className='mb-3'>
         <MDBCol>
-          <p className="fs-3">Project details</p>
+          <p className="fs-3">{t("general.projectDetails")}</p>
         </MDBCol>
       </MDBRow>
 
@@ -90,16 +92,16 @@ const ProjetDetails: FunctionComponent<RouteComponentProps> = (props) => {
             onChange={handleChange}
             className={classes.tabs}
           >
-            <Tab label="General" {...a11yProps(0)} />
-            <Tab label="Languages" {...a11yProps(1)} />
-            <Tab label="Test links" {...a11yProps(2)} />
-            <Tab label="Screenshot devices" {...a11yProps(3)} />
-            <Tab label="Docs & Info" {...a11yProps(4)} />
-            <Tab label="Assigned users" {...a11yProps(5)} />
-            <Tab label="Assigned roles" {...a11yProps(6)} />
-            <Tab label="Testrun Customizations" {...a11yProps(7)} />
-            <Tab label="Test Cases" {...a11yProps(8)} />
-            <Tab label="Lifecycle" {...a11yProps(9)} />
+            <Tab label={t("projectDetails.general")} {...a11yProps(0)} />
+            <Tab label={t("projectDetails.languages")} {...a11yProps(1)} />
+            <Tab label={t("projectDetails.testlinks")} {...a11yProps(2)} />
+            <Tab label={t("projectDetails.screenshotDevices")} {...a11yProps(3)} />
+            <Tab label={t("projectDetails.docsInfo")} {...a11yProps(4)} />
+            <Tab label={t("projectDetails.assignedUsers")} {...a11yProps(5)} />
+            <Tab label={t("projectDetails.assignedRoles")} {...a11yProps(6)} />
+            <Tab label={t("projectDetails.testrunCustomizations")} {...a11yProps(7)} />
+            <Tab label={t("projectDetails.testCases")} {...a11yProps(8)} />
+            <Tab label={t("projectDetails.lifeCycle")}{...a11yProps(9)} />
           </Tabs>
         </MDBCol>
         <MDBCol sm="10">
